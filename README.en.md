@@ -6,6 +6,7 @@
 
 <p>
   <img src="https://img.shields.io/badge/Codex-Skill-111827" alt="Codex Skill" />
+  <img src="https://img.shields.io/badge/Hermes-Compatible-6D28D9" alt="Hermes Compatible" />
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB" alt="Python 3.11+" />
   <a href="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml"><img src="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml/badge.svg" alt="Validate skill" /></a>
 </p>
@@ -14,6 +15,8 @@
   <a href="README.md">中文</a>
   ·
   <a href="examples/">Examples</a>
+  ·
+  <a href="docs/hermes.md">Hermes Agent</a>
 </p>
 
 </div>
@@ -38,6 +41,8 @@ Foreign trade signals are often scattered across news, platform announcements, o
 
 ## Quick Start
 
+### Codex
+
 Install from GitHub into your Codex user skill directory:
 
 ```powershell
@@ -53,6 +58,31 @@ Refresh or restart your Codex session, then trigger it in natural language:
 最近外贸风险有哪些？
 给我做一份德国市场开发简报
 ```
+
+### Hermes Agent
+
+Recommended local install path:
+
+```powershell
+$src = "$env:TEMP\tradehot-skill"
+if (Test-Path $src) { git -C $src pull } else { git clone https://github.com/chnjames/tradehot-skill.git $src }
+New-Item -ItemType Directory -Force "$HOME\.hermes\skills\business\tradehot"
+robocopy $src "$HOME\.hermes\skills\business\tradehot" /MIR /XD .git __pycache__ _cache /XF generated_* pipeline_* test_* *.pyc
+```
+
+If your Hermes build supports GitHub Skill installs, you can also try:
+
+```powershell
+hermes skills install chnjames/tradehot-skill
+```
+
+Run example:
+
+```powershell
+hermes chat --toolsets skills,terminal,web -q "/tradehot 今天外贸 HOT"
+```
+
+See [Hermes Agent Compatibility](docs/hermes.md) for details.
 
 ## Validate Locally
 
@@ -160,6 +190,7 @@ tradehot-skill/
 ├── SKILL.md
 ├── README.md
 ├── README.en.md
+├── docs/
 ├── sources/
 ├── templates/
 ├── scripts/

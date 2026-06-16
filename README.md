@@ -6,6 +6,7 @@
 
 <p>
   <img src="https://img.shields.io/badge/Codex-Skill-111827" alt="Codex Skill" />
+  <img src="https://img.shields.io/badge/Hermes-Compatible-6D28D9" alt="Hermes Compatible" />
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB" alt="Python 3.11+" />
   <a href="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml"><img src="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml/badge.svg" alt="Validate skill" /></a>
 </p>
@@ -14,6 +15,8 @@
   <a href="README.en.md">English</a>
   ·
   <a href="examples/">Examples</a>
+  ·
+  <a href="docs/hermes.md">Hermes Agent</a>
 </p>
 
 </div>
@@ -40,6 +43,8 @@
 
 ## 快速开始
 
+### Codex
+
 从 GitHub 安装到 Codex 用户 Skill 目录：
 
 ```powershell
@@ -55,6 +60,31 @@ git clone https://github.com/chnjames/tradehot-skill.git "$HOME\.codex\skills\tr
 最近外贸风险有哪些？
 给我做一份德国市场开发简报
 ```
+
+### Hermes Agent
+
+推荐安装到 Hermes Skill 目录：
+
+```powershell
+$src = "$env:TEMP\tradehot-skill"
+if (Test-Path $src) { git -C $src pull } else { git clone https://github.com/chnjames/tradehot-skill.git $src }
+New-Item -ItemType Directory -Force "$HOME\.hermes\skills\business\tradehot"
+robocopy $src "$HOME\.hermes\skills\business\tradehot" /MIR /XD .git __pycache__ _cache /XF generated_* pipeline_* test_* *.pyc
+```
+
+如果你的 Hermes 版本支持 GitHub Skill 安装，也可以尝试：
+
+```powershell
+hermes skills install chnjames/tradehot-skill
+```
+
+运行示例：
+
+```powershell
+hermes chat --toolsets skills,terminal,web -q "/tradehot 今天外贸 HOT"
+```
+
+更多说明见 [Hermes Agent Compatibility](docs/hermes.md)。
 
 ## 本地验证
 
@@ -224,6 +254,8 @@ sources/user_config.json
 tradehot-skill/
 ├── SKILL.md
 ├── README.md
+├── README.en.md
+├── docs/
 ├── sources/
 │   ├── sources.zh.json
 │   ├── sources.en.json
