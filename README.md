@@ -1,4 +1,16 @@
+<div align="center">
+
 # tradehot - 外贸 HOT Skill
+
+**把外贸、跨境电商、平台政策、HS Code、市场机会与风险信号，整理成可执行的中文业务简报。**
+
+<p>
+  <img src="https://img.shields.io/badge/Codex-Skill-111827" alt="Codex Skill" />
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB" alt="Python 3.11+" />
+  <a href="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml"><img src="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml/badge.svg" alt="Validate skill" /></a>
+</p>
+
+</div>
 
 `tradehot` 是一个面向外贸、跨境电商、出口企业和市场开发人员的中文情报 Skill。
 

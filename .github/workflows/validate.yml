@@ -1,0 +1,38 @@
+name: Validate skill
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run tests
+        working-directory: scripts
+        run: python test_all.py
+
+      - name: Compile scripts
+        working-directory: scripts
+        run: |
+          python -m py_compile \
+            fetch_news.py \
+            fetch_sources.py \
+            normalize_items.py \
+            rank_items.py \
+            generate_report.py \
+            item_schema.py \
+            item_cluster.py \
+            source_connectors.py \
+            entity_extractor.py \
+            report_sections.py \
+            run_pipeline.py \
+            test_all.py
