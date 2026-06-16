@@ -10,6 +10,12 @@
   <a href="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml"><img src="https://github.com/chnjames/tradehot-skill/actions/workflows/validate.yml/badge.svg" alt="Validate skill" /></a>
 </p>
 
+<p>
+  <a href="README.en.md">English</a>
+  ·
+  <a href="examples/">Examples</a>
+</p>
+
 </div>
 
 `tradehot` 是一个面向外贸、跨境电商、出口企业和市场开发人员的中文情报 Skill。它把分散的信息源标准化、去重、排序，并输出适合业务决策的 Markdown 简报。
