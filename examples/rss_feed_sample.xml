@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Tradehot Sample Feed</title>
+    <link>https://example.com/tradehot</link>
+    <description>Sample trade news feed for connector tests.</description>
+    <item>
+      <title>TikTok Shop seller compliance rule update</title>
+      <link>https://example.com/tiktok-compliance</link>
+      <description>TikTok Shop sellers should review category qualification and listing compliance requirements.</description>
+      <pubDate>Tue, 16 Jun 2026 08:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Freight rates rise on selected Asia-Europe lanes</title>
+      <link>https://example.com/freight-rates</link>
+      <description>Ocean freight rates moved higher on selected Asia-Europe lanes, affecting quotation validity.</description>
+      <pubDate>Tue, 16 Jun 2026 09:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,70 @@
+{
+  "platforms": [
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "official_url": "https://sell.amazon.com/",
+      "topics": ["seller policy", "FBA", "fees", "compliance", "product listing", "account health"]
+    },
+    {
+      "id": "tiktok_shop",
+      "name": "TikTok Shop",
+      "official_url": "https://seller.tiktokglobalshop.com/",
+      "topics": ["seller policy", "fees", "category rules", "content commerce", "affiliate", "fulfillment"]
+    },
+    {
+      "id": "shopee",
+      "name": "Shopee",
+      "official_url": "https://seller.shopee.com/",
+      "topics": ["Southeast Asia", "seller policy", "logistics", "fees", "campaign"]
+    },
+    {
+      "id": "lazada",
+      "name": "Lazada",
+      "official_url": "https://sellercenter.lazada.com/",
+      "topics": ["Southeast Asia", "seller center", "fees", "logistics", "campaign"]
+    },
+    {
+      "id": "temu",
+      "name": "Temu",
+      "official_url": "https://www.temu.com/",
+      "topics": ["semi-managed", "fully-managed", "market expansion", "pricing", "compliance"]
+    },
+    {
+      "id": "shein",
+      "name": "SHEIN Marketplace",
+      "official_url": "https://www.shein.com/",
+      "topics": ["marketplace", "fashion", "supply chain", "compliance", "seller onboarding"]
+    },
+    {
+      "id": "aliexpress",
+      "name": "AliExpress",
+      "official_url": "https://sell.aliexpress.com/",
+      "topics": ["cross-border", "seller policy", "logistics", "campaign", "fees"]
+    },
+    {
+      "id": "ebay",
+      "name": "eBay",
+      "official_url": "https://www.ebay.com/sellercenter",
+      "topics": ["seller policy", "fees", "global shipping", "account standards"]
+    },
+    {
+      "id": "walmart",
+      "name": "Walmart Marketplace",
+      "official_url": "https://marketplace.walmart.com/",
+      "topics": ["US marketplace", "WFS", "seller policy", "fees", "compliance"]
+    },
+    {
+      "id": "etsy",
+      "name": "Etsy",
+      "official_url": "https://www.etsy.com/seller-handbook",
+      "topics": ["handmade", "creative goods", "seller handbook", "fees", "policy"]
+    },
+    {
+      "id": "shopify",
+      "name": "Shopify",
+      "official_url": "https://www.shopify.com/blog",
+      "topics": ["independent site", "DTC", "payments", "apps", "marketing"]
+    }
+  ]
+}

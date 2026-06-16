@@ -1,0 +1,62 @@
+{
+  "language": "en",
+  "category": "Global trade data and international sources",
+  "sources": [
+    {
+      "name": "WTO Statistics",
+      "url": "https://www.wto.org/statistics",
+      "type": "official_data",
+      "priority": 5,
+      "topics": ["global trade", "merchandise trade", "services trade", "monthly trade statistics"]
+    },
+    {
+      "name": "UN Comtrade",
+      "url": "https://comtrade.un.org/",
+      "type": "official_data",
+      "priority": 5,
+      "topics": ["HS code", "imports", "exports", "bilateral trade", "monthly trade", "annual trade"]
+    },
+    {
+      "name": "ITC Trade Map",
+      "url": "https://www.trademap.org/",
+      "type": "official_data_tool",
+      "priority": 5,
+      "topics": ["market share", "importers", "exporters", "growth rate", "product data"]
+    },
+    {
+      "name": "ITC Market Access Map",
+      "url": "https://www.macmap.org/",
+      "type": "official_data_tool",
+      "priority": 5,
+      "topics": ["tariffs", "market access", "trade remedies", "regulatory requirements"]
+    },
+    {
+      "name": "International Trade Administration",
+      "url": "https://www.trade.gov/",
+      "type": "official",
+      "priority": 5,
+      "topics": ["US market", "export guides", "trade compliance", "market intelligence"]
+    },
+    {
+      "name": "Reuters Trade",
+      "url": "https://www.reuters.com/",
+      "type": "news",
+      "priority": 4,
+      "topics": ["tariffs", "trade war", "supply chain", "global commerce", "policy"]
+    },
+    {
+      "name": "FreightWaves",
+      "url": "https://www.freightwaves.com/",
+      "type": "logistics_media",
+      "priority": 3,
+      "topics": ["freight", "shipping", "trucking", "supply chain"]
+    },
+    {
+      "name": "The Loadstar",
+      "url": "https://theloadstar.com/",
+      "type": "logistics_media",
+      "priority": 3,
+      "topics": ["ocean freight", "air cargo", "ports", "logistics"]
+    }
+  ]
+}

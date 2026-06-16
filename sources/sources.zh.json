@@ -1,0 +1,62 @@
+{
+  "language": "zh-CN",
+  "category": "中国外贸/跨境电商",
+  "sources": [
+    {
+      "name": "海关总署",
+      "url": "https://www.customs.gov.cn/",
+      "type": "official",
+      "priority": 5,
+      "topics": ["进出口数据", "海关监管", "跨境电商", "报关", "监管方式", "政策发布"]
+    },
+    {
+      "name": "商务部",
+      "url": "https://www.mofcom.gov.cn/",
+      "type": "official",
+      "priority": 5,
+      "topics": ["外贸政策", "市场开拓", "贸易救济", "服务贸易", "数字贸易"]
+    },
+    {
+      "name": "国家税务总局",
+      "url": "https://www.chinatax.gov.cn/",
+      "type": "official",
+      "priority": 5,
+      "topics": ["出口退税", "跨境电商税务", "税收政策"]
+    },
+    {
+      "name": "中国贸促会",
+      "url": "https://www.ccpit.org/",
+      "type": "official_industry",
+      "priority": 4,
+      "topics": ["展会", "贸易促进", "跨境电商电子刊物", "商事认证", "原产地证"]
+    },
+    {
+      "name": "亿邦动力跨境频道",
+      "url": "https://www.ebrun.com/fto/",
+      "type": "industry_media",
+      "priority": 4,
+      "topics": ["跨境电商", "平台动态", "行业资讯", "卖家生态", "政策数据"]
+    },
+    {
+      "name": "雨果跨境",
+      "url": "https://www.cifnews.com/",
+      "type": "industry_media",
+      "priority": 4,
+      "topics": ["跨境电商", "品牌出海", "平台运营", "选品", "服务商"]
+    },
+    {
+      "name": "中国国际电子商务网",
+      "url": "https://www.ec.com.cn/",
+      "type": "industry_media",
+      "priority": 3,
+      "topics": ["电子商务", "跨境电商", "政策", "行业新闻"]
+    },
+    {
+      "name": "中国出口信用保险公司",
+      "url": "https://www.sinosure.com.cn/",
+      "type": "official_finance",
+      "priority": 4,
+      "topics": ["出口信用保险", "国别风险", "收款风险", "买方信用"]
+    }
+  ]
+}

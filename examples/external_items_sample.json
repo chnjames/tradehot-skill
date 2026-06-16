@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "name": "Amazon seller policy update on product compliance",
+      "snippet": "Amazon announced updated product compliance checks for selected categories.",
+      "link": "https://example.com/amazon-policy",
+      "publisher": "Amazon Seller Central",
+      "source_tier": "platform_official",
+      "date": "2026-06-16",
+      "markets": ["US"],
+      "platforms": ["Amazon"],
+      "categories": ["consumer electronics"],
+      "risk_level": "medium"
+    },
+    {
+      "title": "Amazon seller policy update product compliance",
+      "summary": "Selected categories require stronger product compliance evidence.",
+      "url": "https://example.com/amazon-policy-duplicate",
+      "source_name": "Industry media",
+      "source_tier": "industry_media",
+      "published_date": "2026-06-16",
+      "markets": ["US"],
+      "platforms": ["Amazon"],
+      "categories": ["consumer electronics"],
+      "risk_level": "medium"
+    },
+    {
+      "title": "关税变化：家具类产品出口美国需关注最新税则",
+      "summary": "家具相关产品需按具体 HS Code 核查美国最新关税和贸易救济措施。",
+      "url": "https://example.com/tariff-furniture",
+      "source_name": "Official tariff source",
+      "source_tier": "official",
+      "published_date": "2026-06-16",
+      "markets": ["US"],
+      "categories": ["furniture"],
+      "hs_codes": ["9403"],
+      "risk_level": "high",
+      "confidence": 80
+    }
+  ]
+}

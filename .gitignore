@@ -1,0 +1,30 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Runtime caches
+scripts/_cache/
+.pytest_cache/
+
+# Local environments
+.venv/
+venv/
+env/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated local outputs
+examples/generated_*.md
+examples/generated_*.json
+examples/pipeline_*.md
+examples/pipeline_*.json
+examples/test_*.md
+examples/test_*.json
+
+# Local logs
+*.log

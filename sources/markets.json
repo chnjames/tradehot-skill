@@ -1,0 +1,47 @@
+{
+  "markets": [
+    {"id": "us", "name": "United States", "zh_name": "美国", "region": "North America", "priority": 5},
+    {"id": "ca", "name": "Canada", "zh_name": "加拿大", "region": "North America", "priority": 4},
+    {"id": "mx", "name": "Mexico", "zh_name": "墨西哥", "region": "North America", "priority": 4},
+
+    {"id": "uk", "name": "United Kingdom", "zh_name": "英国", "region": "Europe", "priority": 5},
+    {"id": "de", "name": "Germany", "zh_name": "德国", "region": "Europe", "priority": 5},
+    {"id": "fr", "name": "France", "zh_name": "法国", "region": "Europe", "priority": 4},
+    {"id": "it", "name": "Italy", "zh_name": "意大利", "region": "Europe", "priority": 4},
+    {"id": "es", "name": "Spain", "zh_name": "西班牙", "region": "Europe", "priority": 4},
+    {"id": "nl", "name": "Netherlands", "zh_name": "荷兰", "region": "Europe", "priority": 4},
+    {"id": "pl", "name": "Poland", "zh_name": "波兰", "region": "Europe", "priority": 3},
+    {"id": "se", "name": "Sweden", "zh_name": "瑞典", "region": "Europe", "priority": 3},
+
+    {"id": "jp", "name": "Japan", "zh_name": "日本", "region": "Asia", "priority": 4},
+    {"id": "kr", "name": "South Korea", "zh_name": "韩国", "region": "Asia", "priority": 4},
+    {"id": "in", "name": "India", "zh_name": "印度", "region": "Asia", "priority": 5},
+    {"id": "au", "name": "Australia", "zh_name": "澳大利亚", "region": "Oceania", "priority": 4},
+    {"id": "nz", "name": "New Zealand", "zh_name": "新西兰", "region": "Oceania", "priority": 3},
+
+    {"id": "sg", "name": "Singapore", "zh_name": "新加坡", "region": "Southeast Asia", "priority": 3},
+    {"id": "id", "name": "Indonesia", "zh_name": "印度尼西亚", "region": "Southeast Asia", "priority": 4},
+    {"id": "th", "name": "Thailand", "zh_name": "泰国", "region": "Southeast Asia", "priority": 3},
+    {"id": "vn", "name": "Vietnam", "zh_name": "越南", "region": "Southeast Asia", "priority": 4},
+    {"id": "my", "name": "Malaysia", "zh_name": "马来西亚", "region": "Southeast Asia", "priority": 3},
+    {"id": "ph", "name": "Philippines", "zh_name": "菲律宾", "region": "Southeast Asia", "priority": 3},
+
+    {"id": "ae", "name": "United Arab Emirates", "zh_name": "阿联酋", "region": "Middle East", "priority": 4},
+    {"id": "sa", "name": "Saudi Arabia", "zh_name": "沙特阿拉伯", "region": "Middle East", "priority": 4},
+    {"id": "tr", "name": "Turkey", "zh_name": "土耳其", "region": "Middle East", "priority": 3},
+    {"id": "il", "name": "Israel", "zh_name": "以色列", "region": "Middle East", "priority": 3},
+
+    {"id": "br", "name": "Brazil", "zh_name": "巴西", "region": "Latin America", "priority": 4},
+    {"id": "cl", "name": "Chile", "zh_name": "智利", "region": "Latin America", "priority": 3},
+    {"id": "co", "name": "Colombia", "zh_name": "哥伦比亚", "region": "Latin America", "priority": 3},
+    {"id": "ar", "name": "Argentina", "zh_name": "阿根廷", "region": "Latin America", "priority": 3},
+
+    {"id": "za", "name": "South Africa", "zh_name": "南非", "region": "Africa", "priority": 3},
+    {"id": "ng", "name": "Nigeria", "zh_name": "尼日利亚", "region": "Africa", "priority": 3},
+    {"id": "ke", "name": "Kenya", "zh_name": "肯尼亚", "region": "Africa", "priority": 2},
+    {"id": "eg", "name": "Egypt", "zh_name": "埃及", "region": "Africa", "priority": 3},
+
+    {"id": "ru", "name": "Russia", "zh_name": "俄罗斯", "region": "CIS", "priority": 3, "note": "制裁风险高，需特别关注合规"},
+    {"id": "kz", "name": "Kazakhstan", "zh_name": "哈萨克斯坦", "region": "CIS", "priority": 2}
+  ]
+}

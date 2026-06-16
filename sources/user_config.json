@@ -1,0 +1,41 @@
+{
+  "_comment": "用户偏好配置。按需修改 focus_markets / focus_platforms / focus_categories 以过滤报告内容。",
+  "user": {
+    "role": "外贸业务员",
+    "company_type": "贸易公司",
+    "language": "zh-CN"
+  },
+  "focus_markets": [
+    "United States",
+    "United Kingdom",
+    "Germany",
+    "Japan",
+    "Australia"
+  ],
+  "focus_platforms": [
+    "Amazon",
+    "TikTok Shop",
+    "Shopify"
+  ],
+  "focus_categories": [
+    "home",
+    "pet products",
+    "consumer electronics"
+  ],
+  "focus_hs_codes": [
+    "9403",
+    "4202",
+    "8516"
+  ],
+  "report_defaults": {
+    "daily_days": 1,
+    "weekly_days": 7,
+    "risk_days": 7,
+    "top_n": 10
+  },
+  "notifications": {
+    "high_risk_alert": true,
+    "tariff_change_alert": true,
+    "platform_policy_alert": true
+  }
+}

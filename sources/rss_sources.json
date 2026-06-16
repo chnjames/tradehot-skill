@@ -1,0 +1,13 @@
+{
+  "_comment": "RSS/Atom sources for batch collection. Replace sample local path with real feed URLs when deploying.",
+  "sources": [
+    {
+      "id": "tradehot_sample",
+      "name": "Tradehot Sample Feed",
+      "url": "../examples/rss_feed_sample.xml",
+      "source_tier": "industry_media",
+      "enabled": true,
+      "topics": ["platform", "logistics", "trade"]
+    }
+  ]
+}
