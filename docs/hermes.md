@@ -16,19 +16,19 @@
 
 ## Recommended Hermes Install
 
-Windows PowerShell:
+GitHub install, if your Hermes build supports repository installs:
+
+```powershell
+hermes skills install chnjames/tradehot-skill
+```
+
+Manual Windows PowerShell install:
 
 ```powershell
 $src = "$env:TEMP\tradehot-skill"
 if (Test-Path $src) { git -C $src pull } else { git clone https://github.com/chnjames/tradehot-skill.git $src }
 New-Item -ItemType Directory -Force "$HOME\.hermes\skills\business\tradehot"
 robocopy $src "$HOME\.hermes\skills\business\tradehot" /MIR /XD .git __pycache__ _cache /XF generated_* pipeline_* test_* *.pyc
-```
-
-GitHub install, if your Hermes build supports repository installs:
-
-```powershell
-hermes skills install chnjames/tradehot-skill
 ```
 
 ## Recommended Toolsets

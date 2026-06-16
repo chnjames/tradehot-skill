@@ -43,13 +43,25 @@ Foreign trade signals are often scattered across news, platform announcements, o
 
 ### Codex
 
-Install from GitHub into your Codex user skill directory:
+In Codex, send this message to install the Skill:
+
+```text
+Install this skill: chnjames/tradehot-skill
+```
+
+You can also use the full GitHub URL:
+
+```text
+Install this skill: https://github.com/chnjames/tradehot-skill
+```
+
+For manual installation, clone the repository into your Codex user skill directory:
 
 ```powershell
 git clone https://github.com/chnjames/tradehot-skill.git "$HOME\.codex\skills\tradehot"
 ```
 
-Refresh or restart your Codex session, then trigger it in natural language:
+After installation, refresh or restart your Codex session, then trigger it in natural language:
 
 ```text
 今天外贸 HOT
@@ -61,19 +73,19 @@ Refresh or restart your Codex session, then trigger it in natural language:
 
 ### Hermes Agent
 
-Recommended local install path:
+If your Hermes build supports GitHub Skill installs, use:
+
+```powershell
+hermes skills install chnjames/tradehot-skill
+```
+
+You can also sync it manually into the Hermes Skill directory:
 
 ```powershell
 $src = "$env:TEMP\tradehot-skill"
 if (Test-Path $src) { git -C $src pull } else { git clone https://github.com/chnjames/tradehot-skill.git $src }
 New-Item -ItemType Directory -Force "$HOME\.hermes\skills\business\tradehot"
 robocopy $src "$HOME\.hermes\skills\business\tradehot" /MIR /XD .git __pycache__ _cache /XF generated_* pipeline_* test_* *.pyc
-```
-
-If your Hermes build supports GitHub Skill installs, you can also try:
-
-```powershell
-hermes skills install chnjames/tradehot-skill
 ```
 
 Run example:

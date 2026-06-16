@@ -45,13 +45,25 @@
 
 ### Codex
 
-从 GitHub 安装到 Codex 用户 Skill 目录：
+在 Codex 中，直接发送下面这句话即可安装：
+
+```text
+帮我安装这个 skill：chnjames/tradehot-skill
+```
+
+也可以使用完整 GitHub 地址：
+
+```text
+帮我安装这个 skill：https://github.com/chnjames/tradehot-skill
+```
+
+如果需要手动安装，可克隆到 Codex 用户 Skill 目录：
 
 ```powershell
 git clone https://github.com/chnjames/tradehot-skill.git "$HOME\.codex\skills\tradehot"
 ```
 
-刷新或重启 Codex 会话后，可以用自然语言触发：
+安装后刷新或重启 Codex 会话，然后用自然语言触发：
 
 ```text
 今天外贸 HOT
@@ -63,19 +75,19 @@ git clone https://github.com/chnjames/tradehot-skill.git "$HOME\.codex\skills\tr
 
 ### Hermes Agent
 
-推荐安装到 Hermes Skill 目录：
+如果你的 Hermes 版本支持 GitHub Skill 安装，优先使用：
+
+```powershell
+hermes skills install chnjames/tradehot-skill
+```
+
+也可以手动同步到 Hermes Skill 目录：
 
 ```powershell
 $src = "$env:TEMP\tradehot-skill"
 if (Test-Path $src) { git -C $src pull } else { git clone https://github.com/chnjames/tradehot-skill.git $src }
 New-Item -ItemType Directory -Force "$HOME\.hermes\skills\business\tradehot"
 robocopy $src "$HOME\.hermes\skills\business\tradehot" /MIR /XD .git __pycache__ _cache /XF generated_* pipeline_* test_* *.pyc
-```
-
-如果你的 Hermes 版本支持 GitHub Skill 安装，也可以尝试：
-
-```powershell
-hermes skills install chnjames/tradehot-skill
 ```
 
 运行示例：
