@@ -1,0 +1,95 @@
+{
+  "_comment": "中国出口竞争国画像。按替代效应排序。",
+  "competitors": [
+    {
+      "country": "Vietnam",
+      "zh_name": "越南",
+      "key_sectors": ["textiles", "consumer electronics", "furniture", "outdoor"],
+      "watch_signals": ["Vietnam export growth", "FDI Vietnam", "越南出口退税", "EVFTA", "Vietnam manufacturing"],
+      "competitive_relationship": "替代",
+      "advantage": "人工成本低、FTA 覆盖广（EVFTA/CPTPP/RCEP）、中美关税转移目的地",
+      "disadvantage": "产业链不完整、基础设施不足、电力供应不稳定"
+    },
+    {
+      "country": "India",
+      "zh_name": "印度",
+      "key_sectors": ["textiles", "consumer electronics", "furniture"],
+      "watch_signals": ["India PLI scheme", "Make in India", "印度出口补贴", "India manufacturing FDI"],
+      "competitive_relationship": "替代",
+      "advantage": "人口红利、PLI 补贴推动电子制造、英语优势",
+      "disadvantage": "基础设施落后、物流成本高、营商环境复杂"
+    },
+    {
+      "country": "Mexico",
+      "zh_name": "墨西哥",
+      "key_sectors": ["consumer electronics", "furniture", "outdoor"],
+      "watch_signals": ["nearshoring Mexico", "USMCA", "墨西哥近岸外包", "Mexico manufacturing"],
+      "competitive_relationship": "替代",
+      "advantage": "邻近美国市场、USMCA 零关税、近岸外包趋势",
+      "disadvantage": "安全问题、劳动力成本上升、供应链深度不足"
+    },
+    {
+      "country": "Bangladesh",
+      "zh_name": "孟加拉国",
+      "key_sectors": ["textiles"],
+      "watch_signals": ["Bangladesh garment export", "RMG Bangladesh"],
+      "competitive_relationship": "替代",
+      "advantage": "服装行业全球第二、人工成本极低",
+      "disadvantage": "品类单一、合规标准执行不力"
+    },
+    {
+      "country": "Indonesia",
+      "zh_name": "印度尼西亚",
+      "key_sectors": ["furniture", "textiles", "food contact"],
+      "watch_signals": ["Indonesia export", "Indonesia manufacturing FDI"],
+      "competitive_relationship": "互补/替代",
+      "advantage": "资源丰富、人口大、RCEP 成员",
+      "disadvantage": "出口限制政策多（如镍矿）、地方政策复杂"
+    },
+    {
+      "country": "Turkey",
+      "zh_name": "土耳其",
+      "key_sectors": ["textiles", "furniture", "food contact"],
+      "watch_signals": ["Turkey export", "Turkish lira depreciation", "土耳其出口"],
+      "competitive_relationship": "替代",
+      "advantage": "地理位置佳（欧洲/中东/非洲枢纽）、纺织业发达、货币贬值提升价格竞争力",
+      "disadvantage": "汇率高波动、通胀高、地缘政治风险"
+    },
+    {
+      "country": "Thailand",
+      "zh_name": "泰国",
+      "key_sectors": ["consumer electronics", "outdoor"],
+      "watch_signals": ["Thailand manufacturing", "Thailand export"],
+      "competitive_relationship": "互补",
+      "advantage": "汽车/电子组装业成熟、RCEP 成员",
+      "disadvantage": "人工成本上升、人口老龄化"
+    },
+    {
+      "country": "Cambodia",
+      "zh_name": "柬埔寨",
+      "key_sectors": ["textiles", "outdoor"],
+      "watch_signals": ["Cambodia garment export", "Cambodia manufacturing"],
+      "competitive_relationship": "替代",
+      "advantage": "低人工成本、EBA 对欧优惠（部分取消中）",
+      "disadvantage": "产业规模小、基础设施薄弱"
+    },
+    {
+      "country": "Malaysia",
+      "zh_name": "马来西亚",
+      "key_sectors": ["consumer electronics"],
+      "watch_signals": ["Malaysia semiconductor", "Malaysia electronics export"],
+      "competitive_relationship": "互补",
+      "advantage": "半导体封测和电子组装优势、RCEP 成员",
+      "disadvantage": "劳动力成本高于越南/孟加拉"
+    },
+    {
+      "country": "Philippines",
+      "zh_name": "菲律宾",
+      "key_sectors": ["consumer electronics"],
+      "watch_signals": ["Philippines manufacturing", "Philippines export"],
+      "competitive_relationship": "互补",
+      "advantage": "英语劳动力、BPO 生态",
+      "disadvantage": "制造业基础弱、台风影响物流"
+    }
+  ]
+}

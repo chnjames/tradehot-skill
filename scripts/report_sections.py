@@ -3,8 +3,22 @@
 
 from __future__ import annotations
 
+import json
 from collections import Counter
-from typing import Dict, Iterable, List
+from datetime import date, timedelta
+from pathlib import Path
+from typing import Any, Dict, Iterable, List
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parent
+SOURCES_DIR = ROOT / "sources"
+
+
+def _load_source_json(filename: str) -> Dict[str, Any]:
+    path = SOURCES_DIR / filename
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def join_dimensions(item: Dict[str, object]) -> str:
@@ -126,6 +140,10 @@ def build_daily_sections(items: List[Dict[str, object]]) -> Dict[str, str]:
         "tariff_compliance": section_from_items(tariff_items, "- 暂无新的关税/合规情报；高风险品类仍需复核目标市场规则。"),
         "product_opportunities": section_from_items(opportunity_items, "- 暂无明确选品机会；建议补充趋势数据和平台榜单。"),
         "risks": section_from_items(risk_items, "- 暂无中高风险情报；仍需持续监控关税、认证、物流和平台合规。"),
+        "calendar": build_calendar_section(),
+        "competitors": build_competitor_news_section(items),
+        "logistics_alerts": build_logistics_alert_section(),
+        "fx_alerts": build_fx_alert_section(),
         "actions": build_actions(items),
     }
 
@@ -189,8 +207,10 @@ def build_market_context(market: str, items: List[Dict[str, object]]) -> Dict[st
         "import_demand": section_from_items(filter_by_types(scoped, {"data", "market"}), "- 暂无进口需求数据；建议接入 UN Comtrade / ITC Trade Map。"),
         "growth_categories": summarize_top_dimensions(scoped, "categories"),
         "competitors": "- 需结合贸易数据比较主要出口国、价格带和份额变化。",
+        "competitor_dynamics": build_competitor_news_section(scoped),
         "tariffs_access": section_from_items(filter_by_types(scoped, {"tariff", "compliance", "policy"}), "- 暂无关税/准入情报；需查询目标国官方税则。"),
         "platform_opportunities": summarize_top_dimensions(scoped, "platforms"),
+        "fx_risk_market": build_fx_market_risk(market),
         "risks": section_from_items(filter_by_risk(scoped), "- 暂无中高风险情报。"),
         "actions": build_actions(scoped),
     }
@@ -227,7 +247,12 @@ def build_risk_context(items: List[Dict[str, object]]) -> Dict[str, str]:
         "trade_restriction_risks": section_from_items(filter_by_types(risk_items, {"policy", "compliance"}), "- 暂无贸易限制风险情报。"),
         "platform_compliance_risks": section_from_items(filter_by_types(risk_items, {"platform"}), "- 暂无平台合规风险情报。"),
         "logistics_risks": section_from_items(filter_by_types(risk_items, {"logistics"}), "- 暂无物流风险情报。"),
-        "fx_risks": "- 暂无汇率风险情报；报价仍建议设置有效期。",
+        "logistics_hotspots": build_logistics_alert_section(),
+        "fx_risks": section_from_items(
+            [i for i in risk_items if any(k in str(i.get('summary', '')).lower() for k in ['fx', 'exchange', '汇率', 'currency', '货币'])],
+            "- 暂无汇率风险情报。"
+        ),
+        "fx_risk_countries": build_fx_alert_section(),
         "payment_risks": "- 暂无收款风险情报；新客户仍建议做信用审查。",
         "certification_risks": section_from_items([i for i in risk_items if "certification" in str(i.get("summary", "")).lower() or "认证" in str(i.get("summary", ""))], "- 暂无认证风险情报。"),
         "geopolitical_risks": section_from_items([i for i in risk_items if "sanction" in str(i.get("summary", "")).lower() or "制裁" in str(i.get("summary", ""))], "- 暂无地缘政治风险情报。"),
@@ -250,6 +275,207 @@ def build_opportunity_context(items: List[Dict[str, object]]) -> Dict[str, str]:
         "opportunity_table": "\n".join(rows) if rows else "| 暂无 | 暂无 | 需补充趋势和贸易数据 | 待判断 | 补充数据源 |",
         "platform_heat": summarize_top_dimensions(scoped, "platforms"),
         "data_validation": section_from_items(filter_by_types(scoped, {"data", "market"}), "- 需补充 Google Trends、平台榜单和贸易数据验证。"),
-        "supply_chain_notes": "- 对高潜力品类评估 MOQ、交期、认证、海外仓和售后成本。",
+        "supply_chain_notes": "- 对高潜力品类评估 MOQ、交期、认证、海外仓和售后成本。\n" + build_seasonal_demand_section(scoped),
         "keywords": "- importer, distributor, wholesaler, buyer, sourcing, supplier。",
+    }
+
+
+# ---------------------------------------------------------------------------
+# New intelligence dimension builders
+# ---------------------------------------------------------------------------
+def build_calendar_section(days_ahead: int = 30) -> str:
+    """Return upcoming trade events within `days_ahead` days."""
+    data = _load_source_json("trade_calendar.json")
+    events = data.get("events", [])
+    today = date.today()
+    cutoff = today + timedelta(days=days_ahead)
+    upcoming = []
+    for ev in events:
+        try:
+            ev_date = date.fromisoformat(ev["date"])
+        except (KeyError, ValueError):
+            continue
+        if today <= ev_date <= cutoff:
+            markets = ", ".join(ev.get("markets", []))
+            categories = ", ".join(ev.get("categories", []))
+            lead = ev.get("prep_lead_days", "")
+            lead_note = f"（建议提前 {lead} 天准备）" if lead else ""
+            upcoming.append(
+                f"- **{ev_date.isoformat()}** {ev['name']}"
+                f"｜{markets}｜{categories}{lead_note}"
+            )
+    if not upcoming:
+        return f"- 未来 {days_ahead} 天暂无重大贸易日历事件；建议持续关注广交会、CES、Prime Day 等节点。"
+    return "\n".join(upcoming)
+
+
+def build_seasonal_demand_section(items: List[Dict[str, object]]) -> str:
+    """Return seasonal demand notes for categories found in items."""
+    data = _load_source_json("trade_calendar.json")
+    curves = data.get("seasonal_demand_curves", [])
+    if not curves:
+        return ""
+    found_categories: set = set()
+    for item in items:
+        found_categories.update(str(c) for c in item.get("categories", []) if str(c).strip())
+    notes = []
+    current_month = date.today().month
+    for curve in curves:
+        cat = curve.get("category", "")
+        if cat in found_categories or "all" in found_categories:
+            for market, months in curve.get("peak_months", {}).items():
+                if current_month in months:
+                    notes.append(f"- {cat} 在 {market} 当前处于需求旺季（{months} 月）")
+                elif (current_month % 12 + 1) in months:
+                    notes.append(f"- {cat} 在 {market} 下月进入旺季，建议现在开始备货")
+    return "\n".join(notes) if notes else ""
+
+
+def build_logistics_alert_section() -> str:
+    """Return current logistics hotspot status from config."""
+    data = _load_source_json("logistics_hotspots.json")
+    hotspots = data.get("hotspots", [])
+    high_risk = [h for h in hotspots if h.get("risk_level") == "high"]
+    medium_risk = [h for h in hotspots if h.get("risk_level") == "medium"]
+    lines = []
+    for h in high_risk:
+        routes = ", ".join(h.get("affected_routes", []))
+        lines.append(f"- **🔴 高风险：{h.get('name_zh', h['name'])}**｜影响航线：{routes}｜{h.get('impact_description', '')}。替代方案：{h.get('alternative', '暂无')}。")
+    for h in medium_risk:
+        routes = ", ".join(h.get("affected_routes", []))
+        lines.append(f"- **🟡 中风险：{h.get('name_zh', h['name'])}**｜影响航线：{routes}｜{h.get('impact_description', '')}。")
+    if not lines:
+        return "- 暂无活跃物流中断事件；仍需持续监控主要港口和运河状态。"
+    indices = data.get("freight_indices", [])
+    if indices:
+        idx_lines = [f"  - [{idx['name']}]({idx['url']})" for idx in indices]
+        lines.append("- 运价指数参考：\n" + "\n".join(idx_lines))
+    return "\n".join(lines)
+
+
+def build_fx_alert_section() -> str:
+    """Return high-volatility currency and payment risk summary."""
+    data = _load_source_json("fx_risk.json")
+    high_currencies = [c for c in data.get("high_volatility_currencies", []) if c.get("risk_level") == "high"]
+    high_payment = [p for p in data.get("payment_risk_countries", []) if p.get("risk_level") == "high"]
+    lines = []
+    if high_currencies:
+        names = "、".join(f"{c['zh_name']}（{c['country']}）" for c in high_currencies[:6])
+        lines.append(f"- **高波动货币**：{names}。报价时建议加 3-5% 汇率缓冲并设置短报价有效期。")
+    if high_payment:
+        names = "、".join(f"{p['zh_name']}" for p in high_payment[:6])
+        lines.append(f"- **高支付风险国家**：{names}。建议使用预付款或即期信用证，并做好制裁筛查。")
+    notes = data.get("cross_border_payment_notes", [])
+    for note in notes[:2]:
+        lines.append(f"- **{note['topic']}**：{note['description']}。")
+    if not lines:
+        return "- 暂无汇率/支付风险提醒。"
+    return "\n".join(lines)
+
+
+def build_competitor_news_section(items: List[Dict[str, object]]) -> str:
+    """Return competitor-related items from the intelligence feed."""
+    data = _load_source_json("competitors.json")
+    competitors = data.get("competitors", [])
+    country_names = set()
+    for c in competitors:
+        country_names.add(c.get("country", "").lower())
+        country_names.add(c.get("zh_name", "").lower())
+    related = []
+    for item in items:
+        text = f"{item.get('title', '')} {item.get('summary', '')}".lower()
+        if any(name in text for name in country_names if name):
+            related.append(item)
+    if related:
+        return section_from_items(related, "- 暂无竞争国相关情报。", limit=5)
+    return "- 暂无竞争国相关情报；持续关注越南、印度、墨西哥、孟加拉的出口动态。"
+
+
+def build_fx_market_risk(market: str) -> str:
+    """Return FX/payment risk info for a specific market."""
+    data = _load_source_json("fx_risk.json")
+    market_lower = market.lower()
+    for c in data.get("high_volatility_currencies", []):
+        if c.get("country", "").lower() == market_lower:
+            return f"- **{c['zh_name']}（{c['currency']}）**：风险等级 {c['risk_level']}。{c.get('notes', '')}"
+    for p in data.get("payment_risk_countries", []):
+        if p.get("country", "").lower() == market_lower:
+            return f"- **支付风险：{p['risk_level']}**。{p.get('payment_advice', '')}"
+    return "- 该市场暂无特别汇率/支付风险提醒；报价仍建议设置有效期。"
+
+
+def build_tariff_context(category: str, market: str) -> Dict[str, str]:
+    """Build tariff/access context for a given category and market."""
+    data = _load_source_json("tariff_reference.json")
+    entries = data.get("entries", [])
+    lookup = category.lower().strip()
+    lookup_digits = "".join(ch for ch in lookup if ch.isdigit())
+    matched = None
+    for entry in entries:
+        if entry.get("category", "").lower() == lookup:
+            matched = entry
+            break
+    if not matched:
+        # Try partial match
+        for entry in entries:
+            if lookup and lookup in entry.get("category", "").lower():
+                matched = entry
+                break
+    if not matched and lookup_digits:
+        for entry in entries:
+            prefixes = str(entry.get("hs_prefix", "")).split("/")
+            if any(lookup_digits.startswith(prefix.strip()) for prefix in prefixes if prefix.strip()):
+                matched = entry
+                break
+    market_data = matched.get("markets", {}).get(market, {}) if matched else {}
+    summary = f"{category} 在 {market} 的关税与准入参考。数据日期：{data.get('reference_date', '待更新')}。正式使用时请以官方税则为准。"
+    mfn = market_data.get("mfn_rate", "暂无数据")
+    section_301 = market_data.get("section_301", "")
+    rcep = market_data.get("rcep_rate", "")
+    tariff_lines = [f"- MFN 税率：{mfn}"]
+    if section_301:
+        tariff_lines.append(f"- Section 301 加征：{section_301}")
+    if rcep:
+        tariff_lines.append(f"- RCEP 优惠税率：{rcep}")
+    certs = market_data.get("certifications", [])
+    cert_text = "\n".join(f"- {c}" for c in certs) if certs else "- 暂无强制认证数据；需核实目标市场法规。"
+    labels = market_data.get("labeling", [])
+    label_text = "\n".join(f"- {l}" for l in labels) if labels else "- 暂无标签要求数据；需核实目标市场法规。"
+    tr = market_data.get("trade_remedy", {})
+    tr_lines = []
+    ad = tr.get("anti_dumping", False)
+    cv = tr.get("countervailing", False)
+    if ad:
+        tr_lines.append(f"- 反倾销：{ad}")
+    if cv:
+        tr_lines.append(f"- 反补贴：{cv}")
+    tr_text = "\n".join(tr_lines) if tr_lines else "- 暂无活跃贸易救济措施。"
+    notes = market_data.get("notes", "")
+    # FTA reference
+    fta_text = "- 暂无 FTA 优惠税率数据；建议查询中国商务部 FTA 服务网（fta.mofcom.gov.cn）。"
+    if rcep:
+        fta_text = f"- RCEP：{rcep}（需提供原产地证书）\n- 更多 FTA 优惠请查询中国商务部 FTA 服务网。"
+    # Official sources
+    official = data.get("official_sources", [])
+    src_lines = [f"- [{s['name']}]({s['url']})：{s['description']}" for s in official]
+    src_text = "\n".join(src_lines) if src_lines else "- ITC Market Access Map / 目标国官方税则。"
+    risk_level = "high" if ad and ad != False else ("medium" if section_301 else "low")
+    return {
+        "summary": summary,
+        "tariff_reference": "\n".join(tariff_lines),
+        "fta_rates": fta_text,
+        "certifications": cert_text,
+        "labeling": label_text,
+        "trade_remedy": tr_text,
+        "recent_changes": f"- {notes}" if notes else "- 暂无近期变化；建议定期复核官方税则。",
+        "competitor_tariffs": "- 需对比越南/印度/墨西哥等竞争国在目标市场的关税优势（如 EVFTA/USMCA）。",
+        "risks": f"- 风险等级：{risk_level}。{notes}" if notes else f"- 风险等级：{risk_level}。",
+        "actions": (
+            "1. 确认 HS Code 6/8/10 位编码。\n"
+            "2. 用 ITC Market Access Map 复核税率。\n"
+            "3. 检查是否需要 FTA 原产地证书。\n"
+            "4. 评估认证和标签合规要求。\n"
+            "5. 对比竞争国关税优势。"
+        ),
+        "official_sources": src_text,
     }

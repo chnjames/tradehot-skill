@@ -8,6 +8,7 @@ from pathlib import Path
 sys.path.insert(0, ".")
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT_DIR = SCRIPT_DIR.parent
+SOURCES_DIR = ROOT_DIR / "sources"
 
 PASS = 0
 FAIL = 0
@@ -127,6 +128,16 @@ flat = flatten_sources()
 check("Flatten includes all sources", len(flat) > 20)
 check("Platforms are in flatten", any(s["type"] == "platform_official" for s in flat))
 
+# Knowledge-base files
+check("Has tariff_reference", "tariff_reference" in sources and len(sources["tariff_reference"].get("entries", [])) > 0)
+check("Has trade_calendar", "trade_calendar" in sources and len(sources["trade_calendar"].get("events", [])) > 0)
+check("Has competitors", "competitors" in sources and len(sources["competitors"].get("competitors", [])) > 0)
+check("Has logistics_hotspots", "logistics_hotspots" in sources and len(sources["logistics_hotspots"].get("hotspots", [])) > 0)
+check("Has fx_risk", "fx_risk" in sources and len(sources["fx_risk"].get("high_volatility_currencies", [])) > 0)
+check("tariff entries have markets", all("markets" in e for e in sources["tariff_reference"]["entries"][:3]))
+check("calendar events have date", all("date" in e for e in sources["trade_calendar"]["events"][:3]))
+check("competitors have country", all("country" in c for c in sources["competitors"]["competitors"][:3]))
+
 # ── Test 6: Build search queries ──
 print("\n## Test 6: Search Queries")
 from fetch_news import build_search_queries
@@ -152,11 +163,28 @@ check("Risk queries generated", len(q_risk) > 0)
 q_opp = build_search_queries("opportunity")
 check("Opportunity queries generated", len(q_opp) > 0)
 
+# Tariff queries
+q_tariff = build_search_queries("tariff", market="US", category="furniture")
+check("Tariff queries generated", len(q_tariff) > 0)
+check("Tariff has tariff section", "关税查询" in q_tariff)
+check("Tariff has trade remedy section", "贸易救济" in q_tariff)
+check("Tariff queries contain category", any("furniture" in q for qs in q_tariff.values() for q in qs))
+
+# Calendar queries
+q_cal = build_search_queries("calendar")
+check("Calendar queries generated", len(q_cal) > 0)
+check("Calendar has exhibition section", "展会信息" in q_cal)
+check("Calendar has promo section", "大促日历" in q_cal)
+
+# Competitor monitoring in daily
+check("Daily has competitor section", "竞争国动态" in q_daily)
+
 # ── Test 7: Report generation ──
 print("\n## Test 7: Report Generation")
 from generate_report import (
     generate_daily, generate_platform, generate_market,
-    generate_hs, generate_risk, generate_opportunity, prepare_report_items
+    generate_hs, generate_risk, generate_opportunity, prepare_report_items,
+    generate_tariff, generate_calendar,
 )
 
 r1 = generate_daily(1)
@@ -242,6 +270,24 @@ dynamic_opp = generate_opportunity(7, raw_items=[
 ])
 check("Opportunity report can use external items", "选品机会雷达基于 1 条" in dynamic_opp)
 
+# Tariff report
+r_tariff = generate_tariff(category="furniture", market="US")
+check("Tariff report has category", "furniture" in r_tariff)
+check("Tariff report has market", "US" in r_tariff)
+check("Tariff report has tariff reference", "MFN" in r_tariff)
+check("Tariff report has certifications", "certification" in r_tariff.lower() or "认证" in r_tariff or "暂无" in r_tariff)
+check("Tariff report has actions", "HS Code" in r_tariff)
+
+r_tariff_hs = generate_tariff(hs_code="9403", market="EU")
+check("Tariff report by HS code", "9403" in r_tariff_hs)
+check("Tariff HS prefix matches category reference", "0-5.6%" in r_tariff_hs or "REACH" in r_tariff_hs)
+
+# Calendar report
+r_cal = generate_calendar(days=365)
+check("Calendar report has title", "外贸日历" in r_cal)
+check("Calendar report has suggestions", "建议" in r_cal)
+check("Calendar report has date", str(date.today()) in r_cal)
+
 # ── Test 8: Sample items ──
 print("\n## Test 8: Sample Items")
 from fetch_news import sample_items
@@ -259,7 +305,8 @@ check("Filtered items match query", all("关税" in i["title"] or "关税" in i[
 print("\n## Test 9: Templates")
 templates_dir = ROOT_DIR / "templates"
 expected = ["daily_report.md", "platform_report.md", "market_report.md",
-            "hs_code_report.md", "risk_report.md", "product_opportunity.md"]
+            "hs_code_report.md", "risk_report.md", "product_opportunity.md",
+            "tariff_report.md"]
 for t in expected:
     check(f"Template {t} exists", (templates_dir / t).exists())
 
@@ -305,8 +352,13 @@ from fetch_news import normalize_feed_source, load_rss_sources, collect_rss_sour
 from item_cluster import cluster_items, title_similarity
 from item_schema import validate_items
 from source_connectors import parse_feed_items, clean_text, normalize_feed_date
-from entity_extractor import enrich_item, extract_hs_codes, extract_markets, extract_platforms
-from report_sections import build_daily_sections, build_daily_summary, build_actions
+from entity_extractor import enrich_item, extract_hs_codes, extract_markets, extract_platforms, extract_competitors
+from report_sections import (
+    build_daily_sections, build_daily_summary, build_actions,
+    build_calendar_section, build_logistics_alert_section, build_fx_alert_section,
+    build_tariff_context, build_fx_market_risk, build_competitor_news_section,
+    build_seasonal_demand_section,
+)
 from run_pipeline import generate_report_from_items
 
 sample_path = ROOT_DIR / "examples" / "external_items_sample.json"
@@ -370,6 +422,25 @@ check("Extractor recognizes explicit HS code", extract_hs_codes("HS Code 9403 fu
 check("Extractor platform lookup works", "Amazon" in extract_platforms("amazon seller policy"))
 check("Extractor market lookup works", "Germany" in extract_markets("exports to Germany and 德国"))
 
+# Competitor extraction
+check("extract_competitors finds Vietnam", "Vietnam" in extract_competitors("越南出口增长"))
+check("extract_competitors finds India", "India" in extract_competitors("india textile exports"))
+check("extract_competitors finds multiple", len(extract_competitors("越南和印度竞争")) >= 2)
+check("extract_competitors empty for unrelated", extract_competitors("domestic policy update") == [])
+
+# enrich_item includes competitors
+comp_item = enrich_item({
+    "title": "Vietnam furniture exports growing in US market",
+    "summary": "越南家具出口美国市场份额持续提升。",
+    "type": "general",
+    "risk_level": "low",
+    "markets": [],
+    "platforms": [],
+    "categories": [],
+    "hs_codes": [],
+})
+check("enrich_item extracts competitors", "Vietnam" in comp_item.get("competitors", []))
+
 rss_daily = generate_daily(1, raw_items=batch["items"], source_label="RSS测试数据")
 check("RSS daily uses extracted platform", "TikTok Shop" in rss_daily)
 check("RSS daily has fewer unknown affected fields", "TikTok Shop seller compliance rule update | platform | TikTok Shop" in rss_daily)
@@ -381,6 +452,15 @@ check("Dynamic sections include platform item", "Amazon seller policy update" in
 check("Dynamic actions are generated", build_actions(prepared).startswith("1."))
 summary = build_daily_summary(prepared, "今日", "测试数据")
 check("Dynamic summary includes item count", "共处理" in summary and "测试数据" in summary)
+
+# New sections in daily
+check("Daily sections have calendar key", "calendar" in sections)
+check("Daily sections have competitors key", "competitors" in sections)
+check("Daily sections have logistics_alerts key", "logistics_alerts" in sections)
+check("Daily sections have fx_alerts key", "fx_alerts" in sections)
+check("Calendar section is string", isinstance(sections["calendar"], str))
+check("Logistics alerts contain risk markers", "风险" in sections["logistics_alerts"] or "🔴" in sections["logistics_alerts"] or "🟡" in sections["logistics_alerts"] or "暂无" in sections["logistics_alerts"])
+check("FX alerts section is non-empty", len(sections["fx_alerts"]) > 0)
 
 # ── Test 17: Full pipeline helper ──
 print("\n## Test 17: Full Pipeline")
@@ -404,6 +484,86 @@ pipeline_platform = generate_report_from_items(
     source_label="pipeline test",
 )
 check("Pipeline helper supports platform reports", "TikTok Shop 简报基于" in pipeline_platform)
+
+# Pipeline tariff
+pipeline_tariff = generate_report_from_items(
+    report_type="tariff",
+    items=batch["items"],
+    days=1,
+    platform="",
+    market="US",
+    hs_code="9403",
+    source_label="pipeline test",
+    category="furniture",
+)
+check("Pipeline supports tariff", "furniture" in pipeline_tariff and "US" in pipeline_tariff)
+
+# Pipeline calendar
+pipeline_cal = generate_report_from_items(
+    report_type="calendar",
+    items=batch["items"],
+    days=365,
+    platform="",
+    market="",
+    hs_code="",
+    source_label="pipeline test",
+)
+check("Pipeline supports calendar", "外贸日历" in pipeline_cal)
+
+# ── Test 18: Intelligence dimension builders ──
+print("\n## Test 18: Intelligence Builders")
+
+# Calendar
+cal = build_calendar_section(days_ahead=365)
+check("Calendar section returns string", isinstance(cal, str) and len(cal) > 0)
+check("Calendar has events or fallback", "**" in cal or "暂无" in cal)
+
+# Logistics alerts
+logi = build_logistics_alert_section()
+check("Logistics alert returns string", isinstance(logi, str) and len(logi) > 0)
+check("Logistics has hotspot data", "高风险" in logi or "🔴" in logi or "运价指数" in logi or "暂无" in logi)
+
+# FX alerts
+fx = build_fx_alert_section()
+check("FX alert returns string", isinstance(fx, str) and len(fx) > 0)
+check("FX has currency or payment data", "高波动" in fx or "支付风险" in fx or "人民币" in fx or "暂无" in fx)
+
+# Tariff context
+tariff_ctx = build_tariff_context("furniture", "US")
+check("Tariff context is dict", isinstance(tariff_ctx, dict))
+check("Tariff context has summary", "summary" in tariff_ctx and "furniture" in tariff_ctx["summary"])
+check("Tariff context has tariff_reference", "tariff_reference" in tariff_ctx)
+check("Tariff context has certifications", "certifications" in tariff_ctx)
+check("Tariff context has actions", "actions" in tariff_ctx)
+check("Tariff context has official_sources", "official_sources" in tariff_ctx)
+
+# Tariff context with unknown category
+tariff_unknown = build_tariff_context("unknown_cat_xyz", "US")
+check("Tariff handles unknown category", "summary" in tariff_unknown)
+tariff_hs_prefix = build_tariff_context("9403", "US")
+check("Tariff context matches HS prefix", "0-6%" in tariff_hs_prefix.get("tariff_reference", "") or "CARB" in tariff_hs_prefix.get("certifications", ""))
+
+# FX market risk
+fx_us = build_fx_market_risk("US")
+check("FX market risk US returns string", isinstance(fx_us, str))
+fx_in = build_fx_market_risk("India")
+check("FX market risk India has data", "卢比" in fx_in or "INR" in fx_in or "支付" in fx_in or "暂无" in fx_in)
+
+# Competitor news section
+comp_news = build_competitor_news_section(prepared)
+check("Competitor news returns string", isinstance(comp_news, str))
+
+# Seasonal demand
+demand = build_seasonal_demand_section(prepared)
+check("Seasonal demand returns string", isinstance(demand, str))
+
+# ── Test 19: item_schema competitors field ──
+print("\n## Test 19: Schema Competitors")
+from item_schema import LIST_FIELDS, DEFAULT_ITEM, normalize_item
+check("competitors in LIST_FIELDS", "competitors" in LIST_FIELDS)
+check("DEFAULT_ITEM has competitors", "competitors" in DEFAULT_ITEM and DEFAULT_ITEM["competitors"] == [])
+n_item = normalize_item({"title": "test", "competitors": "Vietnam"})
+check("normalize_item converts competitors to list", isinstance(n_item["competitors"], list))
 
 # ── Summary ──
 print("\n" + "=" * 60)

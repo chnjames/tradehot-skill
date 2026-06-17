@@ -138,6 +138,8 @@ python run_pipeline.py `
 | `hs` | HS Code / 品类机会 |
 | `risk` | 风险雷达 |
 | `opportunity` | 选品机会 |
+| `tariff` | 关税与市场准入速查 |
+| `calendar` | 外贸日历 / 展会 / 大促 / 旺季节点 |
 
 常用示例：
 
@@ -147,6 +149,8 @@ python run_pipeline.py --type market --market EU
 python run_pipeline.py --type hs --hs-code 9403
 python run_pipeline.py --type risk
 python run_pipeline.py --type opportunity
+python run_pipeline.py --type tariff --category furniture --market US
+python run_pipeline.py --type calendar --days 365
 ```
 
 ## 工作流
@@ -259,6 +263,29 @@ sources/user_config.json
 - 关注 HS Code
 - 默认报告窗口
 - 高风险提醒偏好
+
+## 情报知识库
+
+| 文件 | 用途 |
+| --- | --- |
+| `sources/tariff_reference.json` | 品类级关税、FTA、认证、标签、贸易救济参考 |
+| `sources/trade_calendar.json` | 展会、大促、节假日、旺季和备货窗口 |
+| `sources/competitors.json` | 竞争国动态监控线索 |
+| `sources/logistics_hotspots.json` | 港口、运河、航线和运价指数观察 |
+| `sources/fx_risk.json` | 高波动货币、支付风险国家和跨境收款提示 |
+
+这些文件用于生成查询线索、报告骨架和风险提示，不替代官方数据。关税、认证、召回、制裁、出口管制等高风险事项必须复核官方来源。详见 [Data Quality and Source Policy](docs/data-quality.md)。
+
+## 当前实现状态
+
+| 模块 | 状态 |
+| --- | --- |
+| 日报 / 周报 / 平台 / 市场 / HS Code / 风险 / 机会报告 | 已闭环 |
+| 关税与市场准入速查 | 已有静态参考 + 官方源提示，需人工复核官方税则 |
+| 外贸日历 | 已有规划型日历，具体日期需复核主办方/平台公告 |
+| 竞争国、物流热点、汇率风险 | 已接入日报/市场/风险报告作为情报维度 |
+| 飞书推送 / 定时推送 | 当前为 Agent 调用建议，不内置长期后台调度器 |
+| 制裁、召回、出口管制独立监控 | 已有官方来源预设方向，尚未形成独立报告闭环 |
 
 ## 项目结构
 

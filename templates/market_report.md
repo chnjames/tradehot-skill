@@ -15,11 +15,17 @@
 ## 主要竞争国
 {{competitors}}
 
+## 竞争国供应链动态
+{{competitor_dynamics}}
+
 ## 关税与准入要求
 {{tariffs_access}}
 
 ## 平台机会
 {{platform_opportunities}}
+
+## 汇率与支付风险
+{{fx_risk_market}}
 
 ## 风险提醒
 {{risks}}

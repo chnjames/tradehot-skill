@@ -42,6 +42,10 @@ from report_sections import (
     build_opportunity_context,
     build_platform_context,
     build_risk_context,
+    build_tariff_context,
+    build_calendar_section,
+    filter_by_types,
+    section_from_items,
     item_action,
 )
 
@@ -140,6 +144,10 @@ def generate_daily(days: int, raw_items: List[Dict[str, object]] | None = None, 
             "tariff_compliance": sections["tariff_compliance"],
             "product_opportunities": sections["product_opportunities"],
             "risks": sections["risks"],
+            "calendar": sections["calendar"],
+            "competitors": sections["competitors"],
+            "logistics_alerts": sections["logistics_alerts"],
+            "fx_alerts": sections["fx_alerts"],
             "actions": sections["actions"],
             "sources": format_source_notes(items),
         },
@@ -198,8 +206,10 @@ def generate_market(market: str, raw_items: List[Dict[str, object]] | None = Non
             "import_demand": dynamic.get("import_demand") or "- 使用 UN Comtrade、WTO、ITC Trade Map 验证。",
             "growth_categories": dynamic.get("growth_categories") or "- 待接入 HS Code 数据后生成。",
             "competitors": dynamic.get("competitors") or "- 重点比较中国、越南、印度、土耳其、墨西哥、欧盟等供应国。",
+            "competitor_dynamics": dynamic.get("competitor_dynamics") or "- 暂无竞争国供应链动态；建议持续关注越南、印度、墨西哥的出口政策变化。",
             "tariffs_access": dynamic.get("tariffs_access") or "- 使用 ITC Market Access Map 和目标国官方税则验证。",
             "platform_opportunities": dynamic.get("platform_opportunities") or "- 根据该市场主流平台和本地渠道判断。",
+            "fx_risk_market": dynamic.get("fx_risk_market") or "- 报价需设置有效期，必要时使用汇率缓冲。",
             "risks": dynamic.get("risks") or "- 关注关税、认证、物流、支付、汇率和本地法规。",
             "actions": dynamic.get("actions") or (
                 "1. 选择 3-5 个 HS Code 验证。\n"
@@ -271,7 +281,9 @@ def generate_risk(days: int, raw_items: List[Dict[str, object]] | None = None) -
             "trade_restriction_risks": dynamic.get("trade_restriction_risks") or "- 关注制裁、出口管制、不可靠实体清单等。",
             "platform_compliance_risks": dynamic.get("platform_compliance_risks") or "- 关注资质、Listing、内容宣称、延迟履约和差评。",
             "logistics_risks": dynamic.get("logistics_risks") or "- 关注港口拥堵、空海运价格、海外仓和尾程配送。",
+            "logistics_hotspots": dynamic.get("logistics_hotspots") or "- 暂无活跃物流中断事件；仍需持续监控主要港口和运河状态。",
             "fx_risks": dynamic.get("fx_risks") or "- 报价需设置有效期，必要时使用汇率缓冲。",
+            "fx_risk_countries": dynamic.get("fx_risk_countries") or "- 暂无高波动货币/支付风险提醒。",
             "payment_risks": dynamic.get("payment_risks") or "- 新客户建议使用信用保险、信用证、预付款或第三方保障。",
             "certification_risks": dynamic.get("certification_risks") or (
                 "- 高风险品类包括电子电器、儿童用品、食品接触、美妆个护、医疗相关。"
@@ -336,6 +348,46 @@ def generate_opportunity(days: int, raw_items: List[Dict[str, object]] | None = 
     )
 
 
+def generate_tariff(
+    hs_code: str = "",
+    category: str = "",
+    market: str = "",
+    raw_items: List[Dict[str, object]] | None = None,
+) -> str:
+    """Generate tariff and market access report."""
+    template = load_template("tariff_report.md")
+    items = prepare_report_items(raw_items) if raw_items is not None else []
+    cat = category or hs_code or "general"
+    mkt = market or "US"
+    dynamic = build_tariff_context(cat, mkt)
+    dynamic["category_or_hs"] = hs_code or category or "通用"
+    dynamic["market"] = mkt
+    dynamic["date"] = str(date.today())
+    # Append recent tariff-related items from feed
+    tariff_items = filter_by_types(items, {"tariff", "compliance", "policy"})
+    if tariff_items:
+        dynamic["recent_changes"] = section_from_items(tariff_items, "- 暂无近期关税变化情报。")
+    dynamic.setdefault("sources", format_source_notes(items) if items else "- tariff_reference.json + ITC Market Access Map / 目标国官方税则。")
+    return render(template, dynamic)
+
+
+def generate_calendar(days: int = 30) -> str:
+    """Generate a trade calendar report for the next N days."""
+    calendar_section = build_calendar_section(days_ahead=days)
+    lines = [
+        f"# 外贸日历｜未来 {days} 天｜{date.today()}\n",
+        "## 近期重要事件",
+        calendar_section,
+        "",
+        "## 建议",
+        "- 展会前 2 个月准备样品和资料。",
+        "- 大促前 3-4 个月完成备货入仓。",
+        "- 旺季前 2-3 个月安排生产和出货。",
+        "- 留意目标市场公共假日对物流和清关的影响。",
+    ]
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -343,13 +395,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Generate tradehot report drafts.")
     parser.add_argument(
         "--type",
-        choices=["daily", "weekly", "platform", "market", "hs", "risk", "opportunity"],
+        choices=["daily", "weekly", "platform", "market", "hs", "risk", "opportunity", "tariff", "calendar"],
         default="daily",
     )
     parser.add_argument("--days", type=int, default=1)
     parser.add_argument("--platform", default="Amazon")
     parser.add_argument("--market", default="United States")
     parser.add_argument("--hs-code", default="9403")
+    parser.add_argument("--category", default="", help="Product category for tariff report")
     parser.add_argument(
         "--search-queries",
         action="store_true",
@@ -393,6 +446,10 @@ def main() -> None:
         report = generate_risk(args.days, raw_items=input_items)
     elif args.type == "opportunity":
         report = generate_opportunity(args.days, raw_items=input_items)
+    elif args.type == "tariff":
+        report = generate_tariff(hs_code=args.hs_code, category=args.category, market=args.market, raw_items=input_items)
+    elif args.type == "calendar":
+        report = generate_calendar(days=args.days)
     else:
         raise ValueError(f"Unsupported report type: {args.type}")
 

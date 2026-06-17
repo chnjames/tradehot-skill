@@ -1,0 +1,38 @@
+{
+  "_comment": "汇率波动与支付风险参考。高风险货币和支付受限国家清单。数据为参考值，实时汇率请以银行报价为准。",
+  "reference_date": "2026-06",
+  "high_volatility_currencies": [
+    {"currency": "TRY", "country": "Turkey", "zh_name": "土耳其里拉", "risk_level": "high", "notes": "年贬值 30-50%，通胀高企，建议 USD 报价或预付款"},
+    {"currency": "ARS", "country": "Argentina", "zh_name": "阿根廷比索", "risk_level": "high", "notes": "外汇管制严格，换汇困难，建议预付全款"},
+    {"currency": "NGN", "country": "Nigeria", "zh_name": "尼日利亚奈拉", "risk_level": "high", "notes": "外汇短缺，央行管制，到账周期长"},
+    {"currency": "EGP", "country": "Egypt", "zh_name": "埃及镑", "risk_level": "high", "notes": "外汇短缺，信用证兑付风险高"},
+    {"currency": "LBP", "country": "Lebanon", "zh_name": "黎巴嫩镑", "risk_level": "high", "notes": "货币崩溃，几乎无法正常换汇"},
+    {"currency": "PKR", "country": "Pakistan", "zh_name": "巴基斯坦卢比", "risk_level": "high", "notes": "外汇储备低，信用证兑付风险"},
+    {"currency": "VES", "country": "Venezuela", "zh_name": "委内瑞拉玻利瓦尔", "risk_level": "high", "notes": "恶性通胀，制裁风险，不建议直接贸易"},
+    {"currency": "RUB", "country": "Russia", "zh_name": "俄罗斯卢布", "risk_level": "high", "notes": "SWIFT 制裁，跨境支付受限，需人民币结算"},
+    {"currency": "IRR", "country": "Iran", "zh_name": "伊朗里亚尔", "risk_level": "high", "notes": "全面制裁，无法使用 SWIFT"},
+    {"currency": "BRL", "country": "Brazil", "zh_name": "巴西雷亚尔", "risk_level": "medium", "notes": "汇率波动较大但支付系统正常"},
+    {"currency": "ZAR", "country": "South Africa", "zh_name": "南非兰特", "risk_level": "medium", "notes": "新兴市场货币，波动高于主要货币"},
+    {"currency": "INR", "country": "India", "zh_name": "印度卢比", "risk_level": "medium", "notes": "有一定波动但支付正常，USD 结算普遍接受"},
+    {"currency": "IDR", "country": "Indonesia", "zh_name": "印尼盾", "risk_level": "medium", "notes": "本币结算要求增加，但 USD 仍广泛使用"},
+    {"currency": "KZT", "country": "Kazakhstan", "zh_name": "哈萨克斯坦坚戈", "risk_level": "medium", "notes": "受卢布和油价影响较大"}
+  ],
+  "payment_risk_countries": [
+    {"country": "Russia", "zh_name": "俄罗斯", "risk_level": "high", "payment_advice": "仅限人民币跨境结算（CIPS），SWIFT 不可用，需评估二级制裁风险"},
+    {"country": "Iran", "zh_name": "伊朗", "risk_level": "high", "payment_advice": "全面制裁，建议不开展直接贸易"},
+    {"country": "Venezuela", "zh_name": "委内瑞拉", "risk_level": "high", "payment_advice": "制裁 + 外汇管制，预付款也面临合规风险"},
+    {"country": "Argentina", "zh_name": "阿根廷", "risk_level": "high", "payment_advice": "外汇管制，进口付款审批延迟 3-6 个月，建议 100% 预付"},
+    {"country": "Nigeria", "zh_name": "尼日利亚", "risk_level": "high", "payment_advice": "外汇短缺，USD 换汇排队，建议人民币或 EUR 结算"},
+    {"country": "Egypt", "zh_name": "埃及", "risk_level": "high", "payment_advice": "信用证兑付延迟，建议即期 LC 或预付款"},
+    {"country": "Pakistan", "zh_name": "巴基斯坦", "risk_level": "high", "payment_advice": "外汇储备低于 3 个月进口覆盖，LC 风险高"},
+    {"country": "Lebanon", "zh_name": "黎巴嫩", "risk_level": "high", "payment_advice": "银行系统瘫痪，建议现金交易或不开展贸易"},
+    {"country": "Sudan", "zh_name": "苏丹", "risk_level": "high", "payment_advice": "制裁国家，不建议开展贸易"},
+    {"country": "Syria", "zh_name": "叙利亚", "risk_level": "high", "payment_advice": "全面制裁，不建议开展贸易"}
+  ],
+  "cross_border_payment_notes": [
+    {"topic": "人民币跨境结算", "description": "CIPS 覆盖 100+ 国家，俄罗斯/中亚/东南亚部分国家推荐使用人民币结算"},
+    {"topic": "SWIFT gpi", "description": "全球支付创新，提高跨境付款追踪透明度，大多数银行支持"},
+    {"topic": "制裁筛查", "description": "所有交易需做 SDN/OFAC/EU 制裁清单筛查，避免二级制裁风险"},
+    {"topic": "汇率缓冲建议", "description": "高波动货币报价建议加 3-5% 汇率缓冲，并设置 7-15 天报价有效期"}
+  ]
+}

@@ -1,7 +1,7 @@
 ---
 name: tradehot
-description: 外贸 HOT｜中文外贸/跨境电商资讯、全球贸易数据、平台动态、HS Code 机会、国家市场简报与风险雷达 Skill。当用户询问外贸、跨境电商、出口、进口、海关、关税、HS Code、国际物流、平台政策、海外市场、选品、买家开发、外贸日报、跨境电商日报、贸易风险等内容时使用。
-version: 1.0.0
+description: 外贸 HOT｜中文外贸/跨境电商情报、全球贸易数据、平台动态、HS Code 机会、关税准入、贸易日历、竞争国动态、物流风险、汇率风险、国家市场简报与风险雷达 Skill。当用户询问外贸、跨境电商、出口、进口、海关、关税、HS Code、国际物流、平台政策、海外市场、选品机会、外贸日报、跨境电商日报、贸易风险、竞争国、汇率、展会、大促、外贸日历、关税速查等情报获取与监控内容时使用。
+version: 1.1.0
 author: chnjames
 platforms:
   - windows
@@ -56,7 +56,11 @@ metadata:
 - 查询某个 HS Code 或品类的出口机会。
 - 查询关税、海关、认证、出口退税、贸易壁垒、合规风险。
 - 查询国际物流、运价、港口、供应链、汇率、收款风险。
-- 查询选品、买家开发、市场调研、竞品分析、外贸客户开发。
+- 查询选品机会、市场调研、竞品/竞争国动态等情报。
+- 查询关税、准入要求、认证标准、反倾销、贸易救济。
+- 查询外贸展会、大促日历、季节性备货时间窗口。
+- 查询竞争国动态（越南、印度、墨西哥等）。
+- 查询汇率波动、外汇管制、支付风险。
 
 典型触发语：
 
@@ -71,6 +75,10 @@ metadata:
 帮我找宠物用品出口机会
 最近外贸风险有哪些
 给我做一份德国市场开发简报
+家具出口美国关税多少
+最近有什么展会
+越南出口最近有什么变化
+阿根廷外汇风险怎么样
 ```
 
 ## Agent 工作流（重要）
@@ -89,6 +97,9 @@ python scripts/generate_report.py --type market --market "United States"
 python scripts/generate_report.py --type hs --hs-code 9403
 python scripts/generate_report.py --type risk --days 7
 python scripts/generate_report.py --type opportunity --days 7
+python scripts/generate_report.py --type tariff --hs-code 9403 --market "United States"
+python scripts/generate_report.py --type tariff --category furniture --market EU
+python scripts/generate_report.py --type calendar --days 30
 ```
 
 脚本会输出：报告结构、各板块搜索关键词提示、评分排序逻辑。
@@ -98,6 +109,8 @@ python scripts/generate_report.py --type opportunity --days 7
 ```bash
 python scripts/generate_report.py --search-queries --type daily
 python scripts/generate_report.py --search-queries --type hs --hs-code 9403
+python scripts/generate_report.py --search-queries --type tariff --hs-code 9403 --market US
+python scripts/generate_report.py --search-queries --type calendar
 ```
 
 ### Step 2：联网搜索填充真实数据
@@ -110,8 +123,11 @@ python scripts/generate_report.py --search-queries --type hs --hs-code 9403
 | 平台动态 | 各平台 Seller Center 公告、行业媒体报道 | platforms.json 中对应平台 |
 | 数据与市场 | UN Comtrade、ITC Trade Map、WTO 统计 | sources.en.json 中 official_data 类型 |
 | 物流与供应链 | FreightWaves、The Loadstar、运价指数 | sources.en.json 中 logistics_media 类型 |
-| 关税与合规 | ITC Market Access Map、目标国官方税则 | sources.en.json 中 official_data_tool 类型 |
+| 关税与合规 | ITC Market Access Map、目标国官方税则 | tariff_reference.json + sources.en.json 中 official_data_tool 类型 |
 | 选品机会 | Google Trends、平台热搜、行业报告 | 综合多源交叉验证 |
+| 竞争国动态 | 越南/印度/墨西哥/孟加拉出口数据 | competitors.json + 行业媒体 |
+| 物流中断 | 港口/运河/航线状态、运价指数 | logistics_hotspots.json + FreightWaves |
+| 汇率与支付 | 高波动货币、外汇管制国家 | fx_risk.json + 央行/IMF 数据 |
 | 风险预警 | 制裁清单、贸易救济、汇率波动 | 官方源优先 |
 
 ### Step 3：分析与判断
@@ -134,7 +150,16 @@ python scripts/generate_report.py --search-queries --type hs --hs-code 9403
 - 不要只罗列新闻标题，必须转化为业务判断。
 - 每条重要情报按以下句式展开：这件事是什么 → 影响谁 → 影响哪些品类/市场/平台 → 风险 → 机会 → 今天可以做什么。
 
-## 核心能力（7 种报告类型）
+### Step 5（可选）：推送报告
+
+报告生成后，可根据用户需求推送到飞书或其他渠道：
+
+- **飞书文档**：调用 `lark-doc` Skill 创建文档，将报告内容写入。
+- **飞书群聊**：调用 `lark-im` Skill 发送报告摘要到指定群。
+- **飞书邮件**：调用 `lark-mail` Skill 发送报告给指定收件人。
+- **定时推送**：建议通过 Agent 环境的定时任务功能，每日自动触发日报并推送。
+
+## 核心能力（9 种报告类型）
 
 | # | 能力 | 触发场景 | 脚本参数 | 模板文件 |
 |---|---|---|---|---|
@@ -145,6 +170,8 @@ python scripts/generate_report.py --search-queries --type hs --hs-code 9403
 | 5 | HS Code / 品类机会 | "查一下 HS Code 9403" | `--type hs --hs-code <code>` | templates/hs_code_report.md |
 | 6 | 风险雷达 | "最近外贸风险有哪些" | `--type risk --days 7` | templates/risk_report.md |
 | 7 | 选品机会雷达 | "有什么适合开发的产品" | `--type opportunity --days 7` | templates/product_opportunity.md |
+| 8 | 关税与准入 | "家具出口美国关税多少" | `--type tariff --hs-code <code> --market <name>` 或 `--category <name>` | templates/tariff_report.md |
+| 9 | 外贸日历 | "最近有什么展会" | `--type calendar --days 30` | 内联生成 |
 
 ## 热度评分规则
 
@@ -173,6 +200,24 @@ python scripts/generate_report.py --search-queries --type hs --hs-code 9403
 5. **社媒与论坛**（priority 1-2）：仅作线索，不作为事实依据，必须明确标注来源不确定。
 
 完整信息源配置见 `sources/*.json` 和 `platforms.json`。
+
+## 知识库文件
+
+| 文件 | 内容 |
+|---|---|
+| `sources/tariff_reference.json` | 9 大品类 × 主要市场的 MFN 税率、FTA 优惠、认证要求、贸易救济参考 |
+| `sources/trade_calendar.json` | 展会、大促、旺季、假日日历 + 品类季节性需求曲线 |
+| `sources/competitors.json` | 10 个竞争国画像：优势品类、关注信号、竞争关系 |
+| `sources/logistics_hotspots.json` | 8 个物流关键节点（港口/运河）+ 运价指数源 |
+| `sources/fx_risk.json` | 14 个高波动货币 + 10 个高支付风险国家 + 跨境支付注意事项 |
+
+## 数据可信原则
+
+- `sources/*.json` 中的静态知识库用于生成查询线索、风险提示和报告骨架，不应被当作最终官方结论。
+- 涉及关税、贸易救济、制裁、出口管制、认证、召回、税务和平台处罚时，必须优先核验官方来源。
+- 关税类输出必须提示用户复核 HS Code 的 6/8/10 位编码、原产地、目标国税则版本和贸易救济措施。
+- 外贸日历中的展会、大促、旺季和假日节点应标注为 planning reference；具体日期需以主办方或平台公告为准。
+- 飞书推送和定时推送属于分发层能力：本 Skill 可生成内容和建议调用方式，但不内置长期后台调度器。
 
 ## 支持平台
 

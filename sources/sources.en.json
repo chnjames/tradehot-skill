@@ -31,6 +31,55 @@
       "topics": ["tariffs", "market access", "trade remedies", "regulatory requirements"]
     },
     {
+      "name": "USITC Harmonized Tariff Schedule",
+      "url": "https://hts.usitc.gov/",
+      "type": "official_data_tool",
+      "priority": 5,
+      "topics": ["US tariffs", "HTS code", "Section 301", "import duty"]
+    },
+    {
+      "name": "EU TARIC",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/",
+      "type": "official_data_tool",
+      "priority": 5,
+      "topics": ["EU tariffs", "TARIC", "import measures", "market access"]
+    },
+    {
+      "name": "WTO Tariff Download Facility",
+      "url": "https://tariffdata.wto.org/",
+      "type": "official_data_tool",
+      "priority": 5,
+      "topics": ["MFN tariffs", "bound tariffs", "global tariff data"]
+    },
+    {
+      "name": "EU Safety Gate",
+      "url": "https://ec.europa.eu/safety-gate-alerts/screen/webReport",
+      "type": "official",
+      "priority": 5,
+      "topics": ["product recalls", "product safety", "EU compliance"]
+    },
+    {
+      "name": "US CPSC Recalls",
+      "url": "https://www.cpsc.gov/Recalls",
+      "type": "official",
+      "priority": 5,
+      "topics": ["US product recalls", "consumer product safety", "children products"]
+    },
+    {
+      "name": "OFAC Sanctions Lists",
+      "url": "https://ofac.treasury.gov/sanctions-lists",
+      "type": "official",
+      "priority": 5,
+      "topics": ["sanctions", "blocked persons", "trade restrictions"]
+    },
+    {
+      "name": "BIS Entity List",
+      "url": "https://www.bis.gov/entity-list",
+      "type": "official",
+      "priority": 5,
+      "topics": ["export controls", "entity list", "restricted parties"]
+    },
+    {
       "name": "International Trade Administration",
       "url": "https://www.trade.gov/",
       "type": "official",

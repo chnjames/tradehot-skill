@@ -20,8 +20,14 @@
 ## 物流风险
 {{logistics_risks}}
 
+## 物流关键节点状态
+{{logistics_hotspots}}
+
 ## 汇率风险
 {{fx_risks}}
+
+## 高波动货币与支付风险国家
+{{fx_risk_countries}}
 
 ## 收款风险
 {{payment_risks}}

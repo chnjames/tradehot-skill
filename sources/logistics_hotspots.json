@@ -1,0 +1,98 @@
+{
+  "_comment": "全球物流关键节点与中断风险追踪。watch_keywords 用于 Agent 联网搜索。",
+  "hotspots": [
+    {
+      "id": "red_sea",
+      "name": "红海 / 苏伊士运河",
+      "name_zh": "红海 / 苏伊士运河",
+      "type": "canal",
+      "affected_routes": ["亚欧线", "中东线", "非洲东岸线"],
+      "watch_keywords": ["Houthi", "红海", "Red Sea", "Suez Canal", "苏伊士运河", "shipping disruption"],
+      "alternative": "好望角绕行（增加 10-15 天航程）",
+      "impact_description": "红海中断导致亚欧航线运价上涨 100-300%，交期延长 10-15 天",
+      "risk_level": "high"
+    },
+    {
+      "id": "panama_canal",
+      "name": "Panama Canal",
+      "name_zh": "巴拿马运河",
+      "type": "canal",
+      "affected_routes": ["跨太平洋线", "美东线", "南美线"],
+      "watch_keywords": ["Panama Canal", "巴拿马运河", "drought", "transit restriction", "Gatun Lake"],
+      "alternative": "美西港口 + 铁路/公路转运",
+      "impact_description": "干旱限航导致通行量减少 30-50%，排队等待时间延长",
+      "risk_level": "medium"
+    },
+    {
+      "id": "malacca_strait",
+      "name": "Strait of Malacca",
+      "name_zh": "马六甲海峡",
+      "type": "strait",
+      "affected_routes": ["亚欧线", "中东线", "东南亚线"],
+      "watch_keywords": ["Malacca Strait", "马六甲海峡", "piracy", "shipping lane"],
+      "alternative": "龙目海峡/巽他海峡绕行",
+      "impact_description": "全球 40% 贸易量通过此海峡，海盗和地缘风险需持续监控",
+      "risk_level": "low"
+    },
+    {
+      "id": "shanghai_port",
+      "name": "Port of Shanghai",
+      "name_zh": "上海港",
+      "type": "port",
+      "affected_routes": ["所有航线"],
+      "watch_keywords": ["Shanghai port", "上海港", "congestion", "上海港拥堵", "台风"],
+      "alternative": "宁波舟山港",
+      "impact_description": "全球最大集装箱港口，台风季和旺季易出现拥堵",
+      "risk_level": "low"
+    },
+    {
+      "id": "shenzhen_port",
+      "name": "Port of Shenzhen",
+      "name_zh": "深圳港（盐田/蛇口）",
+      "type": "port",
+      "affected_routes": ["跨太平洋线", "亚欧线", "东南亚线"],
+      "watch_keywords": ["Shenzhen port", "盐田港", "蛇口港", "Yantian", "Shekou"],
+      "alternative": "广州南沙港",
+      "impact_description": "华南地区主要出口港，台风季和疫情期曾有严重拥堵",
+      "risk_level": "low"
+    },
+    {
+      "id": "la_lb_port",
+      "name": "Ports of LA / Long Beach",
+      "name_zh": "洛杉矶 / 长滩港",
+      "type": "port",
+      "affected_routes": ["跨太平洋线（美西）"],
+      "watch_keywords": ["LA port", "Long Beach port", "LA congestion", "ILWU", "洛杉矶港", "美西港口罢工"],
+      "alternative": "奥克兰港或美东港口",
+      "impact_description": "美西主要门户，劳资谈判和旺季易导致拥堵和延误",
+      "risk_level": "medium"
+    },
+    {
+      "id": "hamburg_port",
+      "name": "Port of Hamburg",
+      "name_zh": "汉堡港",
+      "type": "port",
+      "affected_routes": ["亚欧线（北欧）"],
+      "watch_keywords": ["Hamburg port", "汉堡港", "Elbe river", "Hamburg congestion"],
+      "alternative": "鹿特丹港 / 安特卫普港",
+      "impact_description": "欧洲第二大港口，易受红海中断和易北河水位影响",
+      "risk_level": "medium"
+    },
+    {
+      "id": "rotterdam_port",
+      "name": "Port of Rotterdam",
+      "name_zh": "鹿特丹港",
+      "type": "port",
+      "affected_routes": ["亚欧线（北欧）"],
+      "watch_keywords": ["Rotterdam port", "鹿特丹港", "Rhine river"],
+      "alternative": "安特卫普港 / 汉堡港",
+      "impact_description": "欧洲最大港口，莱茵河低水位影响内陆转运",
+      "risk_level": "low"
+    }
+  ],
+  "freight_indices": [
+    {"id": "scfi", "name": "SCFI（上海出口集装箱运价指数）", "url": "https://en.sse.net.cn/indices/scfinew.jsp", "description": "中国出口集装箱运价核心指数，每周更新"},
+    {"id": "fbx", "name": "FBX（Freightos Baltic Global Container Index）", "url": "https://fbx.freightos.com/", "description": "全球集装箱运价指数"},
+    {"id": "drewry_wci", "name": "Drewry World Container Index", "url": "https://www.drewry.co.uk/supply-chain-expertise/world-container-index-wci", "description": "全球集装箱运价周报指数"}
+  ]
+}

@@ -29,6 +29,23 @@ def load_all_sources() -> Dict[str, Any]:
         "platforms": load_json("platforms.json"),
         "markets": load_json("markets.json"),
     }
+    # Load optional knowledge-base files
+    for optional_file in [
+        "tariff_reference.json",
+        "trade_calendar.json",
+        "competitors.json",
+        "logistics_hotspots.json",
+        "fx_risk.json",
+    ]:
+        key = optional_file.replace(".json", "")
+        path = SOURCES_DIR / optional_file
+        if path.exists():
+            try:
+                data[key] = json.loads(path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                data[key] = {}
+        else:
+            data[key] = {}
     # Optionally load user preferences
     user_config_path = SOURCES_DIR / "user_config.json"
     if user_config_path.exists():

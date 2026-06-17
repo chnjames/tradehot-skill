@@ -29,6 +29,18 @@
 ## 风险预警
 {{risks}}
 
+## 未来 30 天贸易日历
+{{calendar}}
+
+## 竞争国动态
+{{competitors}}
+
+## 物流中断预警
+{{logistics_alerts}}
+
+## 汇率与支付风险
+{{fx_alerts}}
+
 ## 今日行动清单
 {{actions}}
 

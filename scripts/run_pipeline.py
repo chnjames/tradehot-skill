@@ -21,6 +21,8 @@ from generate_report import (
     generate_opportunity,
     generate_platform,
     generate_risk,
+    generate_tariff,
+    generate_calendar,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,6 +44,7 @@ def generate_report_from_items(
     market: str,
     hs_code: str,
     source_label: str,
+    category: str = "",
 ) -> str:
     if report_type in {"daily", "weekly"}:
         return generate_daily(days=days, raw_items=items, source_label=source_label)
@@ -55,6 +58,10 @@ def generate_report_from_items(
         return generate_risk(days=days, raw_items=items)
     if report_type == "opportunity":
         return generate_opportunity(days=days, raw_items=items)
+    if report_type == "tariff":
+        return generate_tariff(hs_code=hs_code, category=category, market=market, raw_items=items)
+    if report_type == "calendar":
+        return generate_calendar(days=days)
     raise ValueError(f"Unsupported report type: {report_type}")
 
 
@@ -62,7 +69,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the full tradehot RSS-to-report pipeline.")
     parser.add_argument(
         "--type",
-        choices=["daily", "weekly", "platform", "market", "hs", "risk", "opportunity"],
+        choices=["daily", "weekly", "platform", "market", "hs", "risk", "opportunity", "tariff", "calendar"],
         default="daily",
     )
     parser.add_argument("--config", default=str(ROOT / "sources" / "rss_sources.json"))
@@ -70,6 +77,7 @@ def main() -> None:
     parser.add_argument("--platform", default="Amazon")
     parser.add_argument("--market", default="United States")
     parser.add_argument("--hs-code", default="9403")
+    parser.add_argument("--category", default="")
     parser.add_argument("--items-output")
     parser.add_argument("--report-output")
     args = parser.parse_args()
@@ -91,6 +99,7 @@ def main() -> None:
         market=args.market,
         hs_code=args.hs_code,
         source_label=f"RSS批量采集 {args.config}",
+        category=args.category,
     )
     report_path.write_text(report, encoding="utf-8")
 

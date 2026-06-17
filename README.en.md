@@ -136,6 +136,20 @@ Supported report types:
 | `hs` | HS Code or category opportunity report |
 | `risk` | Risk radar |
 | `opportunity` | Product opportunity radar |
+| `tariff` | Tariff and market access quick reference |
+| `calendar` | Trade calendar, exhibitions, promotions, and seasonal windows |
+
+Common examples:
+
+```powershell
+python run_pipeline.py --type platform --platform "TikTok Shop"
+python run_pipeline.py --type market --market EU
+python run_pipeline.py --type hs --hs-code 9403
+python run_pipeline.py --type risk
+python run_pipeline.py --type opportunity
+python run_pipeline.py --type tariff --category furniture --market US
+python run_pipeline.py --type calendar --days 365
+```
 
 ## Workflow
 
@@ -194,6 +208,29 @@ sources/user_config.json
 ```
 
 You can configure focus markets, platforms, categories, HS Codes, report windows, and high-risk alert preferences.
+
+## Intelligence Knowledge Base
+
+| File | Purpose |
+| --- | --- |
+| `sources/tariff_reference.json` | Category-level tariffs, FTA notes, certifications, labeling, and trade-remedy references |
+| `sources/trade_calendar.json` | Exhibitions, promotions, holidays, seasonal demand, and preparation windows |
+| `sources/competitors.json` | Competitor-country monitoring signals |
+| `sources/logistics_hotspots.json` | Ports, canals, routes, and freight index watchlist |
+| `sources/fx_risk.json` | High-volatility currencies, payment-risk countries, and cross-border payment notes |
+
+These files generate search leads, report scaffolds, and risk prompts. They do not replace official data. Tariffs, certifications, recalls, sanctions, export controls, and customs matters must be checked against official sources. See [Data Quality and Source Policy](docs/data-quality.md).
+
+## Current Implementation Status
+
+| Module | Status |
+| --- | --- |
+| Daily, weekly, platform, market, HS Code, risk, opportunity reports | Implemented end to end |
+| Tariff and market access quick reference | Implemented with static reference data and official-source prompts; official tariff verification still required |
+| Trade calendar | Implemented as a planning calendar; exact dates must be verified with event organizers or platforms |
+| Competitor countries, logistics hotspots, FX risk | Integrated into daily, market, and risk reports |
+| Feishu/Lark push and scheduled delivery | Documented as agent integration guidance; no built-in long-running scheduler |
+| Sanctions, recall, export-control standalone monitoring | Official source direction exists; standalone report loop not implemented yet |
 
 ## Project Structure
 

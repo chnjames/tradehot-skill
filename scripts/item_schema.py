@@ -12,7 +12,7 @@ from typing import Dict, Iterable, List, Tuple
 
 from entity_extractor import enrich_item
 
-LIST_FIELDS = ["markets", "platforms", "categories", "hs_codes"]
+LIST_FIELDS = ["markets", "platforms", "categories", "hs_codes", "competitors"]
 VALID_RISK_LEVELS = {"low", "medium", "high"}
 VALID_SOURCE_TIERS = {
     "official",
@@ -47,6 +47,7 @@ DEFAULT_ITEM = {
     "platforms": [],
     "categories": [],
     "hs_codes": [],
+    "competitors": [],
     "risk_level": "low",
     "confidence": 0,
     "evidence": "",

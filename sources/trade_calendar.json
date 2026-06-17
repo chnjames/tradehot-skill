@@ -1,0 +1,35 @@
+{
+  "_comment": "外贸季节性日历：展会、大促、旺季、假日。prep_lead_days 表示建议提前备货/准备天数。",
+  "events": [
+    {"date": "2026-01-06", "type": "promotion", "name": "CES 国际消费电子展", "location": "Las Vegas", "markets": ["US", "Global"], "categories": ["consumer electronics"], "prep_lead_days": 60, "notes": "全球最大消费电子展，新品发布窗口"},
+    {"date": "2026-01-29", "type": "holiday", "name": "中国春节", "markets": ["China"], "categories": ["all"], "prep_lead_days": 45, "notes": "工厂停工 2-4 周，需提前备货和安排出货"},
+    {"date": "2026-02-14", "type": "season", "name": "情人节消费季", "markets": ["US", "EU", "UK", "Australia"], "categories": ["beauty", "pet products"], "prep_lead_days": 45, "notes": "礼品/美妆/宠物用品需求上升"},
+    {"date": "2026-03-01", "type": "holiday", "name": "斋月开始（Ramadan）", "markets": ["United Arab Emirates", "Saudi Arabia", "Indonesia", "Malaysia"], "categories": ["beauty", "food contact", "textiles"], "prep_lead_days": 60, "notes": "中东和东南亚穆斯林市场消费旺季，食品/美妆/服装需求大增"},
+    {"date": "2026-03-10", "type": "exhibition", "name": "法兰克福 Ambiente 消费品展", "location": "Frankfurt", "markets": ["EU", "Global"], "categories": ["home storage", "furniture", "food contact"], "prep_lead_days": 60, "notes": "全球消费品行业顶级展会"},
+    {"date": "2026-04-15", "type": "exhibition", "name": "广交会春季（第一期）", "location": "Guangzhou", "markets": ["Global"], "categories": ["consumer electronics", "furniture", "outdoor"], "prep_lead_days": 30, "notes": "中国最大进出口商品交易会"},
+    {"date": "2026-05-01", "type": "exhibition", "name": "广交会春季（第三期）", "location": "Guangzhou", "markets": ["Global"], "categories": ["textiles", "food contact", "pet products"], "prep_lead_days": 30, "notes": ""},
+    {"date": "2026-06-21", "type": "season", "name": "夏季消费旺季", "markets": ["US", "EU", "UK"], "categories": ["outdoor", "consumer electronics"], "prep_lead_days": 60, "notes": "户外装备/防晒/空调/风扇等夏季品类出货窗口"},
+    {"date": "2026-07-01", "type": "promotion", "name": "Amazon Prime Day（预计）", "markets": ["US", "EU", "UK", "Japan", "Australia"], "categories": ["all"], "prep_lead_days": 90, "notes": "Amazon 年度大促，需提前 3 个月入 FBA 仓"},
+    {"date": "2026-07-15", "type": "season", "name": "返校季（Back to School）", "markets": ["US", "UK"], "categories": ["consumer electronics", "home storage", "textiles"], "prep_lead_days": 60, "notes": "美国返校季为第二大消费季"},
+    {"date": "2026-09-01", "type": "season", "name": "取暖器/冬季品类出货旺季", "markets": ["EU", "UK", "Russia"], "categories": ["consumer electronics"], "prep_lead_days": 90, "notes": "取暖器、电热毯等冬季品类需 8-9 月出货"},
+    {"date": "2026-09-15", "type": "season", "name": "万圣节/圣诞节备货窗口", "markets": ["US", "UK", "EU", "Australia"], "categories": ["home storage", "pet products", "children products", "outdoor"], "prep_lead_days": 90, "notes": "圣诞礼品/装饰需在 9-10 月出货，海运约 30-45 天"},
+    {"date": "2026-10-15", "type": "exhibition", "name": "广交会秋季（第一期）", "location": "Guangzhou", "markets": ["Global"], "categories": ["consumer electronics", "furniture"], "prep_lead_days": 30, "notes": ""},
+    {"date": "2026-11-01", "type": "exhibition", "name": "进博会（CIIE）", "location": "Shanghai", "markets": ["China", "Global"], "categories": ["all"], "prep_lead_days": 30, "notes": "中国国际进口博览会，了解进口政策风向"},
+    {"date": "2026-11-27", "type": "promotion", "name": "Black Friday 黑色星期五", "markets": ["US", "EU", "UK", "Australia"], "categories": ["all"], "prep_lead_days": 120, "notes": "全球最大消费日之一，需提前 4 个月备货"},
+    {"date": "2026-11-30", "type": "promotion", "name": "Cyber Monday", "markets": ["US", "EU", "UK"], "categories": ["consumer electronics"], "prep_lead_days": 120, "notes": "电子产品线上大促"},
+    {"date": "2026-12-25", "type": "holiday", "name": "圣诞节", "markets": ["US", "EU", "UK", "Australia", "Canada"], "categories": ["all"], "prep_lead_days": 120, "notes": ""},
+    {"date": "2026-11-11", "type": "promotion", "name": "双 11 全球购物节", "markets": ["China", "Southeast Asia"], "categories": ["all"], "prep_lead_days": 90, "notes": "中国及东南亚电商平台大促"},
+    {"date": "2026-08-15", "type": "season", "name": "排灯节备货（Diwali prep）", "markets": ["India"], "categories": ["consumer electronics", "home storage", "textiles"], "prep_lead_days": 60, "notes": "印度最大节日消费季，电子/家居/服装需求激增"}
+  ],
+  "seasonal_demand_curves": [
+    {"category": "consumer electronics", "peak_months": {"US": [7, 11, 12], "EU": [11, 12], "Japan": [7, 12]}},
+    {"category": "furniture", "peak_months": {"US": [1, 2, 8, 9], "EU": [3, 4, 9]}},
+    {"category": "outdoor", "peak_months": {"US": [5, 6, 7], "EU": [5, 6, 7], "Australia": [10, 11, 12]}},
+    {"category": "home storage", "peak_months": {"US": [1, 7, 8], "EU": [1, 9]}},
+    {"category": "pet products", "peak_months": {"US": [3, 11, 12], "Japan": [3, 12]}},
+    {"category": "beauty", "peak_months": {"US": [2, 5, 11, 12], "EU": [2, 5, 12]}},
+    {"category": "children products", "peak_months": {"US": [8, 11, 12], "EU": [11, 12]}},
+    {"category": "textiles", "peak_months": {"US": [2, 8, 9], "EU": [3, 9]}},
+    {"category": "food contact", "peak_months": {"US": [11, 12], "EU": [3, 11, 12]}}
+  ]
+}

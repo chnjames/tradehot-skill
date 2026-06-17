@@ -1,0 +1,254 @@
+{
+  "_comment": "关税与市场准入参考矩阵。品类 × 市场 → 税率/认证/FTA/贸易救济。数据为参考值，正式使用需以官方税则为准。",
+  "reference_date": "2026-06",
+  "entries": [
+    {
+      "category": "consumer electronics",
+      "hs_prefix": "85",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-5%",
+          "section_301": "7.5-25%（部分品类加征）",
+          "certifications": ["FCC", "UL", "Energy Star"],
+          "labeling": ["FCC ID 标识", "Made in China 标注", "California Prop 65 警告"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "Section 301 关税需按具体 HS 8 位编码核实；FCC 认证为强制要求"
+        },
+        "EU": {
+          "mfn_rate": "0-4.7%",
+          "certifications": ["CE", "WEEE 注册", "RoHS", "REACH", "EMC"],
+          "labeling": ["CE 标识", "WEEE 回收标识", "能效标签"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "2024 年起 WEEE 指令修订，电子产品生产者责任延伸（EPR）注册趋严"
+        },
+        "UK": {
+          "mfn_rate": "0-4.7%",
+          "certifications": ["UKCA", "WEEE UK 注册"],
+          "labeling": ["UKCA 标识（过渡期至 2027）"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "UKCA 替代 CE，过渡期内 CE 仍可使用至 2027 年底"
+        },
+        "Japan": {
+          "mfn_rate": "0%",
+          "certifications": ["PSE（电气安全）", "TELEC（无线）", "VCCI（EMC 自愿）"],
+          "labeling": ["PSE 标识", "日语说明书"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "日本对消费电子大多零关税，但 PSE 认证为强制"
+        },
+        "Australia": {
+          "mfn_rate": "0-5%",
+          "rcep_rate": "0%（RCEP 优惠）",
+          "certifications": ["RCM", "C-Tick"],
+          "labeling": ["RCM 标识"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "RCEP 下可享零关税，需提供原产地证书"
+        },
+        "Southeast Asia": {
+          "mfn_rate": "0-10%（各国不同）",
+          "rcep_rate": "0-5%",
+          "certifications": ["各国认证不同，泰国 TISI，印尼 SNI"],
+          "labeling": ["本地语言标签"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "中国-东盟 FTA 和 RCEP 均可享优惠税率"
+        }
+      }
+    },
+    {
+      "category": "furniture",
+      "hs_prefix": "94",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-6%",
+          "section_301": "25%（HS 9403 木制家具加征）",
+          "certifications": ["CARB P2（加州甲醛）", "TSCA Title VI"],
+          "labeling": ["Made in 标注", "甲醛合规标签"],
+          "trade_remedy": {"anti_dumping": "木制卧室家具（中国）反倾销税 16-216%", "countervailing": false},
+          "notes": "木制卧室家具对中国反倾销税极高，建议核实具体 HS 编码和税率"
+        },
+        "EU": {
+          "mfn_rate": "0-5.6%",
+          "certifications": ["EN 标准（自愿）", "REACH", "FSC/PEFC（木材来源）"],
+          "labeling": ["EUTR/EUDR 木材法规合规声明"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "欧盟零毁林法规（EUDR）2024 年起生效，涉及木材产品"
+        },
+        "UK": {
+          "mfn_rate": "0-5.6%",
+          "certifications": ["UK REACH"],
+          "labeling": ["原产国标示"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": ""
+        },
+        "Japan": {
+          "mfn_rate": "0-3.8%",
+          "certifications": ["JIS（自愿）", "F☆☆☆☆（甲醛）"],
+          "labeling": ["品质标示"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "日本消费者对甲醛释放等级要求高"
+        },
+        "Australia": {
+          "mfn_rate": "0-5%",
+          "rcep_rate": "0%",
+          "certifications": ["无强制认证", "自愿 AS/NZS 标准"],
+          "labeling": ["原产国标示"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": ""
+        }
+      }
+    },
+    {
+      "category": "home storage",
+      "hs_prefix": "39/73",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-6.5%",
+          "section_301": "7.5-25%（部分品类加征）",
+          "certifications": ["Prop 65（塑料/涂层）"],
+          "labeling": ["Made in 标注"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "塑料收纳用品可能触发 Prop 65 警告要求"
+        },
+        "EU": {
+          "mfn_rate": "0-6.5%",
+          "certifications": ["REACH", "食品接触材料需 EU 10/2011 合规"],
+          "labeling": ["回收标识（塑料）"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": ""
+        }
+      }
+    },
+    {
+      "category": "pet products",
+      "hs_prefix": "42",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-7%",
+          "section_301": "7.5-25%",
+          "certifications": ["Prop 65", "FDA（宠物食品接触）"],
+          "labeling": ["Made in 标注"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": ""
+        },
+        "EU": {
+          "mfn_rate": "0-3.7%",
+          "certifications": ["REACH", "CE（电子宠物用品）"],
+          "labeling": ["CE 标识（如适用）"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": ""
+        }
+      }
+    },
+    {
+      "category": "beauty",
+      "hs_prefix": "33",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-6.5%",
+          "section_301": "7.5-25%",
+          "certifications": ["FDA 注册（MoCRA 2023）", "Prop 65"],
+          "labeling": ["成分表（INCI 格式）", "净含量", "生产商信息"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "MoCRA 2023 要求所有化妆品企业强制 FDA 注册"
+        },
+        "EU": {
+          "mfn_rate": "0-6.5%",
+          "certifications": ["EU 化妆品法规 EC 1223/2009", "CPNP 通报", "CPSR 安全评估"],
+          "labeling": ["PAO 标识", "成分表", "责任企业信息"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "欧盟化妆品法规要求指定欧盟责任人（RP）"
+        }
+      }
+    },
+    {
+      "category": "children products",
+      "hs_prefix": "95",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-6.5%",
+          "section_301": "7.5-25%",
+          "certifications": ["CPSIA", "ASTM F963", "CPSC 第三方测试", "CPC（儿童产品证书）"],
+          "labeling": ["年龄警示标识", "追踪标签"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "CPSIA 铅含量和邻苯二甲酸盐限制为强制要求"
+        },
+        "EU": {
+          "mfn_rate": "0-4.7%",
+          "certifications": ["CE", "EN 71（玩具安全）", "REACH"],
+          "labeling": ["CE 标识", "年龄警示", "EU 授权代理"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "EN 71 系列标准覆盖物理/机械/化学/电气安全"
+        }
+      }
+    },
+    {
+      "category": "textiles",
+      "hs_prefix": "61/62",
+      "markets": {
+        "US": {
+          "mfn_rate": "6-32%（品类差异大）",
+          "section_301": "7.5-25%（部分加征）",
+          "certifications": ["无强制认证", "Prop 65（加州）", "CPSIA（儿童服装）"],
+          "labeling": ["纤维成分", "原产国", "护理标签", "RN 号或 WPL 号"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "纺织品标签法（Textile Fiber Products Identification Act）为强制"
+        },
+        "EU": {
+          "mfn_rate": "8-12%",
+          "certifications": ["REACH", "Oeko-Tex（自愿但市场需求高）"],
+          "labeling": ["纤维成分", "CE（如适用）"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "欧盟纺织品标签需符合 EU 1007/2011"
+        }
+      }
+    },
+    {
+      "category": "outdoor",
+      "hs_prefix": "95/63",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-7%",
+          "section_301": "7.5-25%",
+          "certifications": ["Prop 65", "UL（燃气设备）", "CPSC（安全产品）"],
+          "labeling": ["Made in 标注"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": ""
+        },
+        "EU": {
+          "mfn_rate": "0-4.7%",
+          "certifications": ["CE", "REACH", "EN 标准（品类相关）"],
+          "labeling": ["CE 标识"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": ""
+        }
+      }
+    },
+    {
+      "category": "food contact",
+      "hs_prefix": "39/73/69",
+      "markets": {
+        "US": {
+          "mfn_rate": "0-8%",
+          "section_301": "7.5-25%",
+          "certifications": ["FDA 21 CFR（食品接触材料）", "Prop 65"],
+          "labeling": ["食品接触安全标识"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "FDA 食品接触材料合规为强制"
+        },
+        "EU": {
+          "mfn_rate": "0-12%",
+          "certifications": ["EU 1935/2004", "EU 10/2011（塑料）", "REACH"],
+          "labeling": ["食品接触标识（刀叉杯标志）"],
+          "trade_remedy": {"anti_dumping": false, "countervailing": false},
+          "notes": "欧盟食品接触法规体系完善，塑料/陶瓷/金属各有专项法规"
+        }
+      }
+    }
+  ],
+  "official_sources": [
+    {"name": "ITC Market Access Map", "url": "https://www.macmap.org/", "description": "关税和非关税措施综合查询"},
+    {"name": "US ITC Tariff Search", "url": "https://hts.usitc.gov/", "description": "美国协调关税税则"},
+    {"name": "EU TARIC", "url": "https://ec.europa.eu/taxation_customs/dds2/taric/", "description": "欧盟统一关税税则"},
+    {"name": "中国商务部 FTA 服务网", "url": "http://fta.mofcom.gov.cn/", "description": "中国已签 FTA 优惠税率查询"},
+    {"name": "WTO Tariff Download", "url": "https://tariffdata.wto.org/", "description": "全球 MFN 和约束税率数据"}
+  ]
+}

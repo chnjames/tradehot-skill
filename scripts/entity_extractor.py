@@ -37,6 +37,20 @@ MARKET_ALIASES: Dict[str, List[str]] = {
     "Southeast Asia": ["southeast asia", "东南亚"],
 }
 
+# Competitor country aliases for extraction
+COMPETITOR_ALIASES: Dict[str, List[str]] = {
+    "Vietnam": ["vietnam", "越南"],
+    "India": ["india", "印度"],
+    "Mexico": ["mexico", "墨西哥"],
+    "Bangladesh": ["bangladesh", "孟加拉"],
+    "Indonesia": ["indonesia", "印度尼西亚", "印尼"],
+    "Turkey": ["turkey", "土耳其"],
+    "Cambodia": ["cambodia", "柬埔寨"],
+    "Thailand": ["thailand", "泰国"],
+    "Malaysia": ["malaysia", "马来西亚"],
+    "Philippines": ["philippines", "菲律宾"],
+}
+
 HIGH_RISK_KEYWORDS = [
     "sanction",
     "export control",
@@ -138,6 +152,15 @@ def extract_hs_codes(text: str) -> List[str]:
     return _append_unique([], codes)
 
 
+def extract_competitors(text: str) -> List[str]:
+    """Extract competitor country names mentioned in text."""
+    competitors = []
+    for country, aliases in COMPETITOR_ALIASES.items():
+        if any(alias in text for alias in aliases):
+            competitors.append(country)
+    return competitors
+
+
 def infer_type_from_entities(text: str, current_type: str = "general") -> str:
     if current_type and current_type != "general":
         return current_type
@@ -170,6 +193,7 @@ def enrich_item(item: Dict[str, object]) -> Dict[str, object]:
     enriched["markets"] = _append_unique(enriched.get("markets", []), extract_markets(text))
     enriched["categories"] = _append_unique(enriched.get("categories", []), extract_categories(text))
     enriched["hs_codes"] = _append_unique(enriched.get("hs_codes", []), extract_hs_codes(text))
+    enriched["competitors"] = _append_unique(enriched.get("competitors", []), extract_competitors(text))
     enriched["type"] = infer_type_from_entities(text, str(enriched.get("type", "general")))
     enriched["risk_level"] = infer_risk_from_entities(text, str(enriched.get("risk_level", "low")))
     return enriched

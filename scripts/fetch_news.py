@@ -337,11 +337,23 @@ def collect_rss_sources(config_path: str | Path | None = None) -> Dict[str, obje
 # ---------------------------------------------------------------------------
 # Source-driven search query builder
 # ---------------------------------------------------------------------------
+def _load_source_json_safe(filename: str) -> Dict[str, Any]:
+    """Load a JSON source file, returning empty dict on failure."""
+    path = SOURCES_DIR / filename
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
 def build_search_queries(
     report_type: str = "daily",
     market: Optional[str] = None,
     platform: Optional[str] = None,
     hs_code: Optional[str] = None,
+    category: Optional[str] = None,
 ) -> Dict[str, List[str]]:
     """Generate search query suggestions grouped by report section.
 
@@ -453,6 +465,45 @@ def build_search_queries(
             "fastest growing import categories",
             "emerging market import demand",
         ]
+
+    elif report_type == "tariff":
+        cat = category or hs_code or "general"
+        mkt = market or "US"
+        queries["关税查询"] = [
+            f"HS code {hs_code} tariff rate {mkt}" if hs_code else f"{cat} tariff rate {mkt}",
+            f"{mkt} import duty {cat}",
+            f"ITC Market Access Map {hs_code or cat}",
+        ]
+        queries["贸易救济"] = [
+            f"anti-dumping {cat} {mkt}",
+            f"反倾销 {cat} {mkt}",
+            f"trade remedy {cat} {mkt}",
+        ]
+        queries["认证要求"] = [
+            f"{mkt} certification requirements {cat}",
+            f"{cat} import regulations {mkt}",
+        ]
+
+    elif report_type == "calendar":
+        queries["展会信息"] = [
+            "Canton Fair 2026 schedule",
+            "international trade exhibitions upcoming",
+            "跨境电商 展会 时间表",
+        ]
+        queries["大促日历"] = [
+            "Amazon Prime Day date",
+            "Black Friday ecommerce preparation",
+            "跨境电商 大促 日历",
+        ]
+
+    # Always add competitor monitoring queries
+    if report_type in ("daily", "weekly", "market"):
+        comp_data = _load_source_json_safe("competitors.json")
+        comp_names = [c.get("zh_name", c.get("country", "")) for c in comp_data.get("competitors", [])[:5]]
+        if comp_names:
+            queries["竞争国动态"] = [
+                f"{name} 出口 最新" for name in comp_names
+            ] + ["supply chain shift from China"]
 
     return queries
 
@@ -638,6 +689,7 @@ if __name__ == "__main__":
     parser.add_argument("--platform", default=None)
     parser.add_argument("--market", default=None)
     parser.add_argument("--hs-code", default=None)
+    parser.add_argument("--category", default=None)
     parser.add_argument("--query", default=None)
     parser.add_argument("--input", help="JSON file containing external items/search results.")
     parser.add_argument("--source-name", help="Source name for RSS/Atom mode.")
@@ -652,6 +704,7 @@ if __name__ == "__main__":
             market=args.market,
             platform=args.platform,
             hs_code=args.hs_code,
+            category=args.category,
         )
         for section, qs in queries.items():
             print(f"\n## {section}")
