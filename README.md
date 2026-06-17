@@ -38,6 +38,11 @@
 | 平台政策监控 | Amazon / TikTok Shop / Shopee 等平台动态 |
 | 国家市场研究 | 国家 / 区域市场简报 |
 | 品类与 HS Code 分析 | 机会、风险、贸易信号 |
+| 关税与准入速查 | 税率、认证、FTA、贸易救济参考 |
+| 贸易日历与备货规划 | 展会、大促、节假日、旺季节点 |
+| 竞争国动态监控 | 越南/印度/墨西哥等出口变化 |
+| 物流中断与运价追踪 | 港口/运河状态、运价指数 |
+| 汇率与支付风险 | 高波动货币、收款风险、外汇管制 |
 | 风险预警 | 关税、制裁、物流、合规、平台规则变化 |
 | 选品研究 | 品类机会雷达 |
 
@@ -69,6 +74,11 @@ git clone https://github.com/chnjames/tradehot-skill.git "$HOME\.codex\skills\tr
 今天外贸 HOT
 最近 TikTok Shop 有什么新规？
 查一下 HS Code 9403 的出口机会
+家具出口美国关税多少
+最近有什么展会
+红海航线现在什么情况
+越南出口最近有什么变化
+阿根廷外汇风险怎么样
 最近外贸风险有哪些？
 给我做一份德国市场开发简报
 ```
@@ -301,20 +311,28 @@ tradehot-skill/
 │   ├── platforms.json
 │   ├── markets.json
 │   ├── rss_sources.json
-│   └── user_config.json
+│   ├── user_config.json
+│   ├── tariff_reference.json
+│   ├── trade_calendar.json
+│   ├── competitors.json
+│   ├── logistics_hotspots.json
+│   └── fx_risk.json
 ├── templates/
 │   ├── daily_report.md
 │   ├── platform_report.md
 │   ├── market_report.md
 │   ├── hs_code_report.md
 │   ├── risk_report.md
-│   └── product_opportunity.md
+│   ├── product_opportunity.md
+│   └── tariff_report.md
 ├── scripts/
 │   ├── fetch_news.py
+│   ├── fetch_sources.py
 │   ├── source_connectors.py
 │   ├── item_schema.py
 │   ├── entity_extractor.py
 │   ├── item_cluster.py
+│   ├── normalize_items.py
 │   ├── report_sections.py
 │   ├── rank_items.py
 │   ├── generate_report.py
